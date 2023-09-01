@@ -1,4 +1,4 @@
-package com.hashini.productservice.model
+package com.hashini.services.product.model
 
 case class Product(id: Int,
                    name: String,

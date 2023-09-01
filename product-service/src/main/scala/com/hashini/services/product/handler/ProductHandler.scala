@@ -1,20 +1,21 @@
-package com.hashini.productservice.service
+package com.hashini.services.product.handler
 
-import com.hashini.productservice.model.Product
+import com.hashini.services.product.model.Product
+
 import scala.concurrent.{ExecutionContext, Future}
 
-class ProductService()(implicit executionContext: ExecutionContext) {
+class ProductHandler()(implicit executionContext: ExecutionContext) {
 
   def getProducts: Future[Seq[Product]] = {
     Future(Seq(Product(1, "", "", 1, "")))
   }
 
   def getProduct(id: Int): Future[Product] = {
-    Future(Product(1, "", "", 1, ""))
+    Future(Product(id, "", "", 1, ""))
   }
 
   def addProduct(product: Product): Future[Product] = {
-    Future(Product(1, "", "", 1, ""))
+    Future(product)
   }
 
 }
