@@ -1,4 +1,4 @@
-package com.hashini.services.product.restapi.converter
+package com.hashini.services.product.api.converter
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
 import com.hashini.services.product.model.{Product, Products}

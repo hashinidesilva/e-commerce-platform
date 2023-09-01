@@ -1,10 +1,10 @@
-package com.hashini.services.product.restapi.routes
+package com.hashini.services.product.api.routes
 
 import akka.http.scaladsl.model.StatusCodes.InternalServerError
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import com.hashini.services.product.model.{Product, Products}
-import com.hashini.services.product.restapi.converter.JsonConverter
+import com.hashini.services.product.api.converter.JsonConverter
 import com.hashini.services.product.handler.ProductHandler
 
 import scala.util.{Failure, Success}

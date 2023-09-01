@@ -2,7 +2,7 @@ package com.hashini.services.product
 
 import com.hashini.services.product.handler.ProductHandler
 import com.hashini.services.product.persistence.MigrateDatabaseSchema
-import com.hashini.services.product.restapi.RestServer
+import com.hashini.services.product.api.RestServer
 
 import scala.concurrent.ExecutionContext.Implicits.global
 

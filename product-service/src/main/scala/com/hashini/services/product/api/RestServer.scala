@@ -1,10 +1,10 @@
-package com.hashini.services.product.restapi
+package com.hashini.services.product.api
 
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
 import com.hashini.services.product.handler.ProductHandler
-import com.hashini.services.product.restapi.routes.ProductRoutes
+import com.hashini.services.product.api.routes.ProductRoutes
 import com.hashini.services.product.util.DefaultConfiguration
 
 import scala.concurrent.ExecutionContext
