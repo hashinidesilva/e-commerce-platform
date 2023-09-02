@@ -3,8 +3,8 @@ package com.hashini.services.product.api.routes
 import akka.http.scaladsl.model.StatusCodes.InternalServerError
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
-import com.hashini.services.product.model.{Product, Products}
 import com.hashini.services.product.api.converter.JsonConverter
+import com.hashini.services.product.dto.ProductDTO
 import com.hashini.services.product.handler.ProductHandler
 
 import scala.util.{Failure, Success}
@@ -17,15 +17,16 @@ object ProductRoutes extends JsonConverter {
         pathEnd {
           concat(
             get {
+              println("Received products request")
               onComplete(productService.getProducts) {
                 case Success(products) =>
-                  complete(Products(products))
+                  complete(products)
                 case Failure(ex) =>
                   complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
               }
             },
             post {
-              entity(as[Product]) { product =>
+              entity(as[ProductDTO]) { product =>
                 onComplete(productService.addProduct(product)) {
                   case Success(product) =>
                     complete(product)
