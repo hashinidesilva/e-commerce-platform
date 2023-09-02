@@ -14,6 +14,8 @@ lazy val root = (project in file("."))
       "com.typesafe.akka" %% "akka-http" % AkkaHttpVersion,
       "com.typesafe.akka" %% "akka-http-spray-json" % AkkaHttpVersion,
       "org.flywaydb" % "flyway-core" % "9.21.2",
-      "org.postgresql" % "postgresql" % "42.6.0"
+      "org.postgresql" % "postgresql" % "42.6.0",
+      "com.typesafe.slick" %% "slick" % "3.3.3",
+      "com.typesafe.slick" %% "slick-hikaricp" % "3.3.3",
     )
   )
