@@ -24,4 +24,11 @@ class DefaultCategoryDAO extends CategoryDAO {
     }
   }
 
+  override def addCategory(category: Category): Future[Category] = {
+    db.run((categoryQuery returning categoryQuery) += category)
+  }
+
+  override def search(): Future[Seq[Category]] = {
+    db.run(categoryQuery.result)
+  }
 }

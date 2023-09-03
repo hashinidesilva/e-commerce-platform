@@ -13,7 +13,7 @@ trait CategoryComponent {
 
     def name: Rep[String] = column[String]("name")
 
-    override def * : ProvenShape[Category] = (id, name) <> (Category.tupled, Category.unapply)
+    override def * : ProvenShape[Category] = (name, id) <> (Category.tupled, Category.unapply)
   }
 
   lazy val categoryQuery = TableQuery[CategoryTable]

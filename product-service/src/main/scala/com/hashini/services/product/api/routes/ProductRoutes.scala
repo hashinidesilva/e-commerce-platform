@@ -17,7 +17,6 @@ object ProductRoutes extends JsonConverter {
         pathEnd {
           concat(
             get {
-              println("Received products request")
               onComplete(productService.getProducts) {
                 case Success(products) =>
                   complete(products)

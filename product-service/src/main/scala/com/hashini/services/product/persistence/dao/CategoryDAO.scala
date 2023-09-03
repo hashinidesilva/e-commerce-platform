@@ -9,4 +9,8 @@ trait CategoryDAO {
 
   def loadCategoryByName(name: String): Future[Try[Category]]
 
+  def addCategory(category: Category): Future[Category]
+
+  def search(): Future[Seq[Category]]
+
 }
