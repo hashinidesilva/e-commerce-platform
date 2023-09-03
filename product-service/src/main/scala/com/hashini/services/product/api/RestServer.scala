@@ -13,7 +13,7 @@ import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
 
 class RestServer(productHandler: ProductHandler,
-                 categoryHandler: CategoryHandler) {
+                 categoryHandler: CategoryHandler) extends CORSHandler {
 
   implicit val system: ActorSystem[_] = ActorSystem(Behaviors.empty, "product")
   implicit val executionContext: ExecutionContext = system.executionContext
@@ -33,7 +33,12 @@ class RestServer(productHandler: ProductHandler,
   }
 
   private def createRoute(): Route = {
-    concat(ProductRoutes.route(productHandler), CategoryRoutes.route(categoryHandler))
+    corsHandler {
+      concat(
+        ProductRoutes.route(productHandler),
+        CategoryRoutes.route(categoryHandler)
+      )
+    }
   }
 
 }
