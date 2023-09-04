@@ -15,7 +15,12 @@ class DefaultProductDAO extends ProductDAO {
     db.run((productQuery returning productQuery) += product)
   }
 
-  override def search(): Future[Seq[ProductItem]] = {
-    db.run(productQuery.result)
+  override def search(name: Option[String],
+                      category: Option[String]): Future[Seq[ProductItem]] = {
+    val searchName = name.getOrElse("").trim.toLowerCase
+    db.run((productQuery.filterIf(name.nonEmpty)(_.name.toLowerCase like s"%$searchName%") join
+      categoryQuery on (_.categoryId === _.id)).
+      filterOpt(category)(_._2.name.toLowerCase === _.toLowerCase).
+      map(_._1).result)
   }
 }

@@ -8,6 +8,7 @@ trait ProductDAO {
 
   def addProduct(product: ProductItem): Future[ProductItem]
 
-  def search(): Future[Seq[ProductItem]]
+  def search(name: Option[String],
+             category: Option[String]): Future[Seq[ProductItem]]
 
 }

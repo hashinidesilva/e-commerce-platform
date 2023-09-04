@@ -17,11 +17,13 @@ object ProductRoutes extends JsonConverter {
         pathEnd {
           concat(
             get {
-              onComplete(productService.getProducts) {
-                case Success(products) =>
-                  complete(products)
-                case Failure(ex) =>
-                  complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
+              parameters("name".?, "category".?) { (name, category) =>
+                onComplete(productService.getProducts(name, category)) {
+                  case Success(products) =>
+                    complete(products)
+                  case Failure(ex) =>
+                    complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
+                }
               }
             },
             post {

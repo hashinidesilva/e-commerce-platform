@@ -7,9 +7,10 @@ import scala.concurrent.{ExecutionContext, Future}
 
 class ProductHandler(productDAO: ProductDAO)(implicit executionContext: ExecutionContext) {
 
-  def getProducts: Future[ProductsDTO] = {
+  def getProducts(name: Option[String],
+                  category: Option[String]): Future[ProductsDTO] = {
     for {
-      productItems <- productDAO.search()
+      productItems <- productDAO.search(name, category)
     } yield ProductsDTO(productItems.map(_.getProductResponseDTO))
   }
 
