@@ -1,9 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
 
 const fetchProducts = async (params) => {
-  const response = await fetch("http://localhost:9000/products?" + new URLSearchParams(params));
-  return response.json();
+  const response = await axios.get("http://localhost:9000/products", {
+    params: params
+  });
+  return response.data;
 };
 export const useProducts = (params) => {
-  return useQuery(["products", params], fetchProducts);
+  return useQuery(["products", params], () => fetchProducts(params));
 };

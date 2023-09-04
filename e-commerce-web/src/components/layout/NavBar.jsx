@@ -9,7 +9,11 @@ export const NavBar = () => {
   const navigate = useNavigate();
   return (
     <Toolbar sx={{backgroundColor: "#004d40", justifyContent: 'space-between'}}>
-      <Typography variant="h6" component="div" onClick={() => navigate("/")}>
+      <Typography
+        variant="h6"
+        component="div"
+        onClick={() => navigate("/")}
+        sx={{'&:hover': {cursor: 'grab'}}}>
         E-Commerce
       </Typography>
       <SearchProducts/>

@@ -1,15 +1,25 @@
-import { Card, CardContent, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Card, CardContent, CardMedia, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 
 export const ProductCard = ({product}) => {
+  const navigate = useNavigate();
   return (
-    <Card sx={{width: 275, height: 275}}>
+    <Card
+      sx={{width: 275, height: 400, '&:hover': {cursor: 'grab'}}}
+      onClick={() => navigate(`/products/${product.name}`)}>
+      <CardMedia
+        component="img"
+        sx={{height: 200}}
+        image="src/assets/electronics.jpg"
+        title="item"
+      />
       <CardContent>
-        <Typography sx={{fontSize: 14}} color="text.secondary">
+        <Typography varient="h1">
           {product?.name}
         </Typography>
-        <Typography sx={{fontSize: 14}} color="text.secondary">
-          {product?.unitPrice}
+        <Typography varient="h2" color="text.secondary">
+          Rs{product?.unitPrice}
         </Typography>
       </CardContent>
     </Card>
