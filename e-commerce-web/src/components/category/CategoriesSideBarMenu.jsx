@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Dialog, DialogTitle, List, ListItem } from "@mui/material";
+import { Dialog, DialogTitle, ListItemText, MenuItem, MenuList } from "@mui/material";
 import PropTypes from "prop-types";
 import { useCategories } from "../../hooks/useCategories.jsx";
 
@@ -10,7 +10,7 @@ export const CategoriesSideBarMenu = ({isOpened, handleClose}) => {
 
   const menuItemClickHandler = (categoryName) => {
     handleClose(true);
-    navigate(`${categoryName}`);
+    navigate(`${categoryName.toLowerCase()}`);
   };
 
   return (
@@ -20,15 +20,16 @@ export const CategoriesSideBarMenu = ({isOpened, handleClose}) => {
       onClose={handleClose}
       sx={{width: '20%'}}>
       <DialogTitle sx={{backgroundColor: '#00695c', color: 'white'}}>Categories</DialogTitle>
-      <List>
+      <MenuList>
         {categories.map((category) => (
-          <ListItem
+          <MenuItem
             key={category.id}
+            sx={{paddingX: 3, paddingY: 1.5}}
             onClick={menuItemClickHandler.bind(null, category.name)}>
-            {category.name}
-          </ListItem>
+            <ListItemText> {category.name}</ListItemText>
+          </MenuItem>
         ))}
-      </List>
+      </MenuList>
     </Dialog>
   );
 };

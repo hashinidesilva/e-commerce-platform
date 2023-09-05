@@ -16,18 +16,21 @@ export const ProductsPage = () => {
 
   return (
     <>
-      <Typography
-        sx={{marginBottom: 3, fontWeight: 700, fontSize: 40}}>
-        {category}
-      </Typography>
-      {(products.length === 0 && !isLoading) ? <NoProducts/> :
-        <Grid container spacing={2}>
-          {products.map((product) => (
-            <Grid item key={product.id}>
-              <ProductCard product={product}/>
-            </Grid>
-          ))}
-        </Grid>
+      {(products.length === 0 && !isLoading) && <NoProducts/>}
+      {(products.length > 0 && !isLoading) &&
+        <>
+          <Typography
+            sx={{marginBottom: 3, fontWeight: 700, fontSize: 20}}>
+            Results
+          </Typography>
+          <Grid container spacing={2}>
+            {products.map((product) => (
+              <Grid item key={product.id}>
+                <ProductCard product={product}/>
+              </Grid>
+            ))}
+          </Grid>
+        </>
       }
     </>
   );

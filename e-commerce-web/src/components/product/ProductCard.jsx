@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Card, CardContent, CardMedia, Typography } from "@mui/material";
+import { Card, CardContent, CardMedia, Rating, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 
 export const ProductCard = ({product}) => {
@@ -15,12 +15,13 @@ export const ProductCard = ({product}) => {
         title="item"
       />
       <CardContent>
-        <Typography varient="h1">
+        <Typography varient="h1" gutterBottom>
           {product?.name}
         </Typography>
-        <Typography varient="h2" color="text.secondary">
-          Rs{product?.unitPrice}
+        <Typography varient="h1">
+          Rs. {product?.unitPrice}
         </Typography>
+        <Rating name="read-only" value={4} readOnly size="small"/>
       </CardContent>
     </Card>
   );
