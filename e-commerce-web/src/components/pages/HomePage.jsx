@@ -8,7 +8,7 @@ export const HomePage = () => {
         <CategoryCard title={"Electronics"} imagePath={"src/assets/electronics.jpeg"}/>
       </Grid>
       <Grid item>
-        <CategoryCard title={"Beauty and Personal Care"} imagePath={"src/assets/beauty and personal care.jpeg"}/>
+        <CategoryCard title={"Beauty & Personal Care"} imagePath={"src/assets/beauty and personal care.jpeg"}/>
       </Grid>
       <Grid item>
         <CategoryCard title={"Women's Fashion"} imagePath={"src/assets/womens fashion.jpeg"}/>
@@ -23,7 +23,7 @@ export const HomePage = () => {
         <CategoryCard title={"Sports"} imagePath={"src/assets/sports.jpeg"}/>
       </Grid>
       <Grid item>
-        <CategoryCard title={"Health and Household"} imagePath={"src/assets/health and household.jpeg"}/>
+        <CategoryCard title={"Health & Household"} imagePath={"src/assets/health and household.jpeg"}/>
       </Grid>
       <Grid item>
         <CategoryCard title={"Books"} imagePath={"src/assets/books.jpeg"}/>
