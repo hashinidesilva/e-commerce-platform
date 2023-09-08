@@ -30,7 +30,7 @@ export const ProductInfoPage = () => {
 
   return (
     <Box sx={{marginTop: "50px", display: "flex", justifyContent: "center"}}>
-      <Card sx={{display: 'flex', padding: 2, width: '70%'}}>
+      <Card sx={{display: 'flex', padding: 2, width: '70%', alignItems: 'center'}}>
         <InventoryIcon sx={{fontSize: 200, marginBottom: 2}}/>
         {/*<CardMedia*/}
         {/*  component="img"*/}
@@ -49,7 +49,7 @@ export const ProductInfoPage = () => {
               <Typography variant="h6" component="div">
                 Rs. 88
               </Typography>
-              <Stack direction="row" spacing={2} sx={{alignItems: 'center'}}>
+              <Stack direction="row" spacing={4} sx={{alignItems: 'center'}}>
                 <Typography variant="subtitle1" component="div">
                   Quantity
                 </Typography>
@@ -91,10 +91,24 @@ export const ProductInfoPage = () => {
                 />
               </Stack>
               <Stack direction="row" spacing={4} sx={{justifyContent: 'flex-start'}}>
-                <Button variant="contained" sx={{backgroundColor: "#ffc107", color: 'black', width: '25%'}}>
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "#ffc107",
+                    color: 'black',
+                    width: '25%',
+                    '&:hover': {backgroundColor: '#ffb300'}
+                  }}>
                   Buy Now
                 </Button>
-                <Button variant="contained" sx={{backgroundColor: "#ff8f00", color: 'black', width: '25%'}}>
+                <Button
+                  variant="contained"
+                  sx={{
+                    backgroundColor: "#ff8f00",
+                    color: 'black',
+                    width: '25%',
+                    '&:hover': {backgroundColor: '#ff6f00'}
+                  }}>
                   Add to Cart
                 </Button>
               </Stack>
