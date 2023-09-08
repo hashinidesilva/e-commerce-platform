@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { Stack, Toolbar, Typography } from "@mui/material";
+import { Badge, Stack, Toolbar, Typography } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
 import LanguageIcon from '@mui/icons-material/Language';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -20,7 +20,9 @@ export const NavBar = () => {
       <Stack direction="row" spacing={4} sx={{marginLeft: 4, justifyContent: 'flex-end'}}>
         <PersonIcon/>
         <LanguageIcon/>
-        <ShoppingCartIcon/>
+        <Badge badgeContent={4} color="warning">
+          <ShoppingCartIcon/>
+        </Badge>
       </Stack>
     </Toolbar>
   );
