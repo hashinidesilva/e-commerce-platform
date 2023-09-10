@@ -3,7 +3,7 @@ import { Dialog, DialogTitle, ListItemText, MenuItem, MenuList } from "@mui/mate
 import PropTypes from "prop-types";
 import { useCategories } from "../../hooks/useCategories.jsx";
 
-export const CategoriesSideBarMenu = ({isOpened, handleClose}) => {
+export const CategoriesSideBarMenu = ({isOpen, handleClose}) => {
   const navigate = useNavigate();
   const {data} = useCategories();
   const categories = data?.items ?? [];
@@ -16,7 +16,7 @@ export const CategoriesSideBarMenu = ({isOpened, handleClose}) => {
   return (
     <Dialog
       fullScreen
-      open={isOpened}
+      open={isOpen}
       onClose={handleClose}
       sx={{width: '20%'}}>
       <DialogTitle sx={{backgroundColor: '#00695c', color: 'white'}}>Categories</DialogTitle>
@@ -35,6 +35,6 @@ export const CategoriesSideBarMenu = ({isOpened, handleClose}) => {
 };
 
 CategoriesSideBarMenu.propTypes = {
-  isOpened: PropTypes.bool,
+  isOpen: PropTypes.bool,
   handleClose: PropTypes.func
 };

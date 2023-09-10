@@ -21,7 +21,7 @@ export const NavBar = () => {
         <PersonIcon/>
         <LanguageIcon/>
         <Badge badgeContent={4} color="warning">
-          <ShoppingCartIcon/>
+          <ShoppingCartIcon onClick={() => navigate("/cart")}/>
         </Badge>
       </Stack>
     </Toolbar>

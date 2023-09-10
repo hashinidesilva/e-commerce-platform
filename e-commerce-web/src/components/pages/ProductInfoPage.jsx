@@ -1,31 +1,18 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  Divider,
-  IconButton,
-  InputAdornment,
-  Stack,
-  TextField,
-  Typography
-} from "@mui/material";
+import { Box, Button, Card, CardContent, Divider, Stack, Typography } from "@mui/material";
 import InventoryIcon from '@mui/icons-material/Inventory';
-import RemoveIcon from '@mui/icons-material/Remove';
-import AddIcon from '@mui/icons-material/Add';
+import { CartNavigation } from "../order/CartNavigation.jsx";
+import { QuantityCounter } from "../common/QuantityCounter.jsx";
 
 export const ProductInfoPage = () => {
   const params = useParams();
-  const [quantity, setQuantity] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+  const [addToCart, setAddToCart] = useState(false);
   const {product} = params;
 
-  const handleChange = (event) => {
-    const regex = /^[0-9\b]+$/;
-    if (event.target.value === "" || regex.test(event.target.value)) {
-      setQuantity(event.target.value);
-    }
+  const onAddToCart = () => {
+    setAddToCart(true);
   };
 
   return (
@@ -53,42 +40,7 @@ export const ProductInfoPage = () => {
                 <Typography variant="subtitle1" component="div">
                   Quantity
                 </Typography>
-                <TextField
-                  id="qunatity"
-                  type="text"
-                  size="small"
-                  value={quantity}
-                  onChange={handleChange}
-                  sx={{width: '20%'}}
-                  inputProps={{style: {textAlign: 'center'}}}
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <IconButton
-                          size="small"
-                          color="inherit"
-                          disabled={quantity <= 0}
-                          onClick={() => setQuantity((prevVal) => prevVal - 1)}
-                          sx={{borderRadius: 0, backgroundColor: "white", '&:hover': {backgroundColor: 'white'}}}
-                        >
-                          <RemoveIcon/>
-                        </IconButton>
-                      </InputAdornment>
-                    ),
-                    endAdornment: (
-                      <InputAdornment position="end">
-                        <IconButton
-                          size="small"
-                          color="inherit"
-                          onClick={() => setQuantity((prevVal) => prevVal + 1)}
-                          sx={{borderRadius: 0, backgroundColor: "white", '&:hover': {backgroundColor: 'white'}}}
-                        >
-                          <AddIcon/>
-                        </IconButton>
-                      </InputAdornment>
-                    )
-                  }}
-                />
+                <QuantityCounter quantity={quantity} setQuantity={setQuantity}/>
               </Stack>
               <Stack direction="row" spacing={4} sx={{justifyContent: 'flex-start'}}>
                 <Button
@@ -102,6 +54,7 @@ export const ProductInfoPage = () => {
                   Buy Now
                 </Button>
                 <Button
+                  onClick={onAddToCart}
                   variant="contained"
                   sx={{
                     backgroundColor: "#ff8f00",
@@ -114,6 +67,12 @@ export const ProductInfoPage = () => {
               </Stack>
             </Stack>
           </CardContent>
+          {addToCart && (
+            <CartNavigation
+              isOpen={addToCart}
+              itemSize={quantity}
+              handleClose={() => setAddToCart(false)}/>
+          )}
         </Box>
       </Card>
     </Box>

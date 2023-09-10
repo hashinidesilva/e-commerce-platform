@@ -4,6 +4,7 @@ import { Layout } from "./components/layout/Layout.jsx";
 import { HomePage } from "./components/pages/HomePage.jsx";
 import { ProductsPage } from "./components/pages/ProductsPage.jsx";
 import { ProductInfoPage } from "./components/pages/ProductInfoPage.jsx";
+import { CartPage } from "./components/pages/CartPage.jsx";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
           <Route path="/" element={<HomePage/>}/>
           <Route path="/products" element={<ProductsPage/>}/>
           <Route path="/products/:product" element={<ProductInfoPage/>}/>
+          <Route path="/cart" element={<CartPage/>}/>
           <Route path=":category" element={<ProductsPage/>}/>
         </Routes>
       </Box>

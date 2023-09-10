@@ -10,7 +10,7 @@ export const Layout = () => {
     <AppBar position="static">
       <NavBar/>
       <SubNavBar changeOpen={setOpen}/>
-      {open && <CategoriesSideBarMenu isOpened={open} handleClose={() => setOpen(false)}/>}
+      {open && <CategoriesSideBarMenu isOpen={open} handleClose={() => setOpen(false)}/>}
     </AppBar>
   );
 };
