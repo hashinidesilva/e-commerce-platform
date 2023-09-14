@@ -4,8 +4,10 @@ import com.hashini.services.product.persistence.DatabaseConnector.db
 import com.hashini.services.product.persistence.dao.ProductDAO
 import com.hashini.services.product.persistence.model.DAL._
 import com.hashini.services.product.persistence.model.savable.ProductItem
+import com.hashini.services.product.util.PrivateExecutionContext.executionContext
 
 import scala.concurrent.Future
+import scala.util.{Failure, Success, Try}
 
 class DefaultProductDAO extends ProductDAO {
 
@@ -22,5 +24,16 @@ class DefaultProductDAO extends ProductDAO {
       categoryQuery on (_.categoryId === _.id)).
       filterOpt(category)(_._2.name.toLowerCase === _.toLowerCase).
       map(_._1).result)
+  }
+
+  override def load(id: Int): Future[Try[ProductItem]] = {
+    for {
+      productOption <- db.run(productQuery.filter(_.id === id).result.headOption)
+    } yield productOption match {
+      case Some(product) =>
+        Success(product)
+      case None =>
+        Failure(new Exception(s"Product item is not found for id: $id"))
+    }
   }
 }

@@ -41,8 +41,13 @@ object ProductRoutes extends JsonConverter {
         path(IntNumber) { id =>
           get {
             onComplete(productService.getProduct(id)) {
-              case Success(product) =>
-                complete(product)
+              case Success(productTry) =>
+                productTry match {
+                  case Success(product) =>
+                    complete(product)
+                  case Failure(ex) =>
+                    complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
+                }
               case Failure(ex) =>
                 complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
             }

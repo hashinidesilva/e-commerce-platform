@@ -3,6 +3,7 @@ package com.hashini.services.product.persistence.dao
 import com.hashini.services.product.persistence.model.savable.ProductItem
 
 import scala.concurrent.Future
+import scala.util.Try
 
 trait ProductDAO {
 
@@ -10,5 +11,7 @@ trait ProductDAO {
 
   def search(name: Option[String],
              category: Option[String]): Future[Seq[ProductItem]]
+
+  def load(id: Int): Future[Try[ProductItem]]
 
 }
