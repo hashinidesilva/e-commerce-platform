@@ -7,7 +7,7 @@ export const ProductCard = ({product}) => {
   return (
     <Card
       sx={{width: 275, height: 400, '&:hover': {cursor: 'grab'}}}
-      onClick={() => navigate(`/products/${product.name}`)}>
+      onClick={() => navigate(`/products/${product.name}/dp/${product.id}`)}>
       <CardMedia
         component="img"
         sx={{height: 200}}

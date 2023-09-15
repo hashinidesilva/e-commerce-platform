@@ -26,7 +26,7 @@ export const QuantityCounter = ({quantity, setQuantity, width = '20%'}) => {
               size="small"
               color="inherit"
               disabled={quantity <= 1}
-              onClick={() => setQuantity((prevVal) => prevVal - 1)}
+              onClick={() => setQuantity(quantity - 1)}
               sx={{paddingX: 0, backgroundColor: "white", '&:hover': {backgroundColor: 'white'}}}
             >
               <RemoveIcon/>
@@ -38,7 +38,7 @@ export const QuantityCounter = ({quantity, setQuantity, width = '20%'}) => {
             <IconButton
               size="small"
               color="inherit"
-              onClick={() => setQuantity((prevVal) => prevVal + 1)}
+              onClick={() => setQuantity(quantity + 1)}
               sx={{paddingX: 0, borderRadius: 0, backgroundColor: "white", '&:hover': {backgroundColor: 'white'}}}
             >
               <AddIcon/>
