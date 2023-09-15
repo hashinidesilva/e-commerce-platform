@@ -18,9 +18,12 @@ trait CartItemComponent {
 
     def quantity: Rep[Int] = column[Int]("quantity")
 
+    def selected: Rep[Boolean] = column[Boolean]("selected")
+
     override def * : ProvenShape[CartItem] = (productId,
       cartId,
       quantity,
+      selected,
       id) <> (CartItem.tupled, CartItem.unapply)
   }
 
