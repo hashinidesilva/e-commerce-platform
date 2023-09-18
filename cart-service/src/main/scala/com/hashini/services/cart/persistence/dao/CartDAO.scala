@@ -11,5 +11,5 @@ trait CartDAO {
 
   def getCart(userId: Int): Future[Option[Cart]]
 
-  def save(cart: Cart): DBIOAction[Cart, NoStream, Effect.Write]
+  def insertOrUpdateIO(cart: Cart): DBIOAction[Cart, NoStream, Effect.Write]
 }

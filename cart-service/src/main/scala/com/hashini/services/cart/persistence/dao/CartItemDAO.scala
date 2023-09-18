@@ -11,10 +11,16 @@ trait CartItemDAO {
 
   def insertOrUpdate(item: CartItem): Future[Int]
 
+  def insertOrUpdateIO(item: CartItem): DBIOAction[CartItem, NoStream, Effect.Write]
+
   def getCartItems(cartId: Int): Future[Seq[CartItem]]
 
-  def saveCartItems(cartItems: Seq[CartItem]): DBIOAction[Seq[CartItem], NoStream, Effect.Write]
+  def loadByProductId(cartId: Int,
+                      productId: Int): DBIOAction[Option[CartItem], NoStream, Effect.Read]
 
   def delete(id: Int): Future[Int]
+
+  def updateSelected(cartId: Int,
+                     selected: Boolean): Future[Int]
 
 }

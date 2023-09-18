@@ -4,6 +4,6 @@ CREATE TABLE cart_items
     product_id integer NOT NULL,
     cart_id    integer NOT NULL,
     quantity   integer NOT NULL,
-    selected   boolean DEFAULT true,
+    selected   boolean NOT NULL DEFAULT true,
     CONSTRAINT "fk_cart" FOREIGN KEY (cart_id) references carts (id)
 )

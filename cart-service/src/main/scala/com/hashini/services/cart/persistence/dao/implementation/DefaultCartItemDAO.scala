@@ -5,6 +5,7 @@ import com.hashini.services.cart.persistence.dao.CartItemDAO
 import com.hashini.services.cart.persistence.model.DAL.{cartItemQuery, profile}
 import com.hashini.services.cart.persistence.model.savable.CartItem
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class DefaultCartItemDAO extends CartItemDAO {
@@ -15,19 +16,26 @@ class DefaultCartItemDAO extends CartItemDAO {
     db.run(cartItemQuery.insertOrUpdate(item))
   }
 
-  override def getCartItems(cartId: Int): Future[Seq[CartItem]] = {
-    db.run(cartItemQuery.filter(_.cartId === cartId).result)
+  override def insertOrUpdateIO(item: CartItem): DBIOAction[CartItem, NoStream, Effect.Write] = {
+    for {
+      itemOption <- (cartItemQuery returning cartItemQuery).insertOrUpdate(item)
+    } yield itemOption.getOrElse(item)
   }
 
-  override def saveCartItems(cartItems: Seq[CartItem]): DBIOAction[Seq[CartItem], NoStream, Effect.Write] = {
-    DBIO.sequence(cartItems.map(item => insertCartItemIO(item)))
+  override def getCartItems(cartId: Int): Future[Seq[CartItem]] = {
+    db.run(cartItemQuery.filter(_.cartId === cartId).result)
   }
 
   override def delete(id: Int): Future[Int] = {
     db.run(cartItemQuery.filter(_.id === id).delete)
   }
 
-  private def insertCartItemIO(cartItem: CartItem): DBIOAction[CartItem, NoStream, Effect.Write] = {
-    (cartItemQuery returning cartItemQuery) += cartItem
+  override def loadByProductId(cartId: Int,
+                               productId: Int): DBIOAction[Option[CartItem], NoStream, Effect.Read] = {
+    cartItemQuery.filter(item => item.cartId === cartId && item.productId === productId).result.headOption
+  }
+
+  override def updateSelected(cartId: Int, selected: Boolean): Future[Int] = {
+    db.run(cartItemQuery.filter(_.cartId === cartId).map(_.selected).update(selected))
   }
 }

@@ -53,6 +53,11 @@ class CartHandler(cartDAO: CartDAO,
     cartItemDAO.insertOrUpdate(item.getCartItem.copy(id = id))
   }
 
+  def updateSelected(cartId: Int,
+                     selected: Boolean): Future[Int] = {
+    cartItemDAO.updateSelected(cartId, selected)
+  }
+
   private def save(cartOption: Option[Cart],
                    cartDTO: CartDTO): Future[(Cart, Seq[CartItem])] = {
     val query = cartOption match {
@@ -66,18 +71,33 @@ class CartHandler(cartDAO: CartDAO,
   }
 
   private def saveCartItems(cart: Cart,
-                            cartItems: Seq[CartItemDTO]): DBIOAction[(Cart, Seq[CartItem]), NoStream, Effect.Write] = {
+                            cartItems: Seq[CartItemDTO]):
+  DBIOAction[(Cart, Seq[CartItem]), NoStream, Effect.Read with Effect.Write] = {
     val cartId = cart.id
     for {
-      items <- cartItemDAO.saveCartItems(cartItems.map(_.getCartItem.copy(cartId = cartId)))
+      items <- DBIO.sequence(cartItems.map(item => saveCartItem(cartId, item.getCartItem)))
     } yield (cart, items)
   }
 
-  private def saveCartAndCartItems(cartDTO: CartDTO): DBIOAction[(Cart, Seq[CartItem]), NoStream, Effect.Write] = {
+  private def saveCartAndCartItems(cartDTO: CartDTO): DBIOAction[(Cart, Seq[CartItem]), NoStream, Effect.Write with Effect.Read] = {
     for {
-      cart <- cartDAO.save(cartDTO.getCart)
-      items <- cartItemDAO.saveCartItems(cartDTO.items.map(_.getCartItem.copy(cartId = cart.id)))
-    } yield (cart, items)
+      cart <- cartDAO.insertOrUpdateIO(cartDTO.getCart)
+      items <- saveCartItems(cart, cartDTO.items)
+    } yield items
+  }
+
+  private def saveCartItem(cartId: Int,
+                           cartItem: CartItem): DBIOAction[CartItem, NoStream, Effect.Read with Effect.Write] = {
+    for {
+      itemOption <- cartItemDAO.loadByProductId(cartId, cartItem.productId)
+      cartItem <- itemOption match {
+        case Some(item) =>
+          cartItemDAO.insertOrUpdateIO(cartItem.copy(cartId = cartId, id = item.id,
+            quantity = item.quantity + cartItem.quantity))
+        case None =>
+          cartItemDAO.insertOrUpdateIO(cartItem.copy(cartId = cartId))
+      }
+    } yield cartItem
   }
 
   private def getCartItems(cartOption: Option[Cart]): Future[Seq[CartItem]] = {

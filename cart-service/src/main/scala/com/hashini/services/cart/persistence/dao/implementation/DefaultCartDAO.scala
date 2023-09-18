@@ -5,6 +5,7 @@ import com.hashini.services.cart.persistence.dao.CartDAO
 import com.hashini.services.cart.persistence.model.DAL.{cartQuery, profile}
 import com.hashini.services.cart.persistence.model.savable.Cart
 
+import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 class DefaultCartDAO extends CartDAO {
@@ -15,8 +16,10 @@ class DefaultCartDAO extends CartDAO {
     db.run(cartQuery.filter(_.userId === userId).result.headOption)
   }
 
-  override def save(cart: Cart): DBIOAction[Cart, NoStream, Effect.Write] = {
-    (cartQuery returning cartQuery) += cart
+  override def insertOrUpdateIO(cart: Cart): DBIOAction[Cart, NoStream, Effect.Write] = {
+    for {
+      cartOption <- (cartQuery returning cartQuery).insertOrUpdate(cart)
+    } yield cartOption.getOrElse(cart)
   }
 
   /*  override def addCart(cartDTO: CartDTO): Future[CartResponseDTO] = {
