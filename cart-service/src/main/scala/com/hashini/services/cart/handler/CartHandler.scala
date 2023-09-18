@@ -10,7 +10,8 @@ import com.hashini.services.cart.persistence.model.savable.{Cart, CartItem}
 import scala.concurrent.{ExecutionContext, Future}
 
 class CartHandler(cartDAO: CartDAO,
-                  cartItemDAO: CartItemDAO)(implicit execution_Context: ExecutionContext) {
+                  cartItemDAO: CartItemDAO,
+                  productsHandler: FetchProductsHandler)(implicit execution_Context: ExecutionContext) {
 
   import profile.api._
 
@@ -18,14 +19,29 @@ class CartHandler(cartDAO: CartDAO,
     for {
       cartOption <- cartDAO.getCart(userId)
       cartItems <- getCartItems(cartOption)
-    } yield cartOption.map(_.getCartResponseDTO(cartItems))
+      productsResponse <- productsHandler.sendProductsRequest()
+      mappedItems = cartItems.map(item => item -> productsResponse.items.find(_.id == item.productId)).toMap
+      removableItems = mappedItems.filter(_._2.isEmpty).keys.map(_.id).toSeq
+      _ <- Future.sequence(removableItems.map(deleteItem))
+    } yield {
+      val productDefinedList = mappedItems.filter(_._2.isDefined).toSeq
+      val cartItemsResponse = productDefinedList.map(item => item._1.getCartItemResponse(item._2))
+      cartOption.map(_.getCartResponseDTO(cartItemsResponse))
+    }
   }
 
   def addCart(cartDTO: CartDTO): Future[CartResponseDTO] = {
+    val cartItems = cartDTO.items
     for {
+      products <- Future.sequence(cartItems.map(item => productsHandler.sendProductRequest(item.productId)))
       cartOption <- cartDAO.getCart(1)
       cartResponse <- save(cartOption, cartDTO)
-    } yield cartResponse
+    } yield {
+      val cart = cartResponse._1
+      val items = cartResponse._2
+      CartResponseDTO(cart.id, cart.userId, TimestampConverter.convertToString(cart.createdTime),
+        items.map(item => item.getCartItemResponse(products.find(_.id == item.productId))))
+    }
   }
 
   def deleteItem(id: Int): Future[Int] = {
@@ -38,7 +54,7 @@ class CartHandler(cartDAO: CartDAO,
   }
 
   private def save(cartOption: Option[Cart],
-                   cartDTO: CartDTO): Future[CartResponseDTO] = {
+                   cartDTO: CartDTO): Future[(Cart, Seq[CartItem])] = {
     val query = cartOption match {
       case Some(cart) =>
         saveCartItems(cart, cartDTO.items)
@@ -50,18 +66,18 @@ class CartHandler(cartDAO: CartDAO,
   }
 
   private def saveCartItems(cart: Cart,
-                            cartItems: Seq[CartItemDTO]): DBIOAction[CartResponseDTO, NoStream, Effect.Write] = {
+                            cartItems: Seq[CartItemDTO]): DBIOAction[(Cart, Seq[CartItem]), NoStream, Effect.Write] = {
     val cartId = cart.id
     for {
       items <- cartItemDAO.saveCartItems(cartItems.map(_.getCartItem.copy(cartId = cartId)))
-    } yield CartResponseDTO(cartId, cart.userId, TimestampConverter.convertToString(cart.createdTime), items)
+    } yield (cart, items)
   }
 
-  private def saveCartAndCartItems(cartDTO: CartDTO): DBIOAction[CartResponseDTO, NoStream, Effect.Write] = {
+  private def saveCartAndCartItems(cartDTO: CartDTO): DBIOAction[(Cart, Seq[CartItem]), NoStream, Effect.Write] = {
     for {
       cart <- cartDAO.save(cartDTO.getCart)
       items <- cartItemDAO.saveCartItems(cartDTO.items.map(_.getCartItem.copy(cartId = cart.id)))
-    } yield CartResponseDTO(cart.id, cart.userId, TimestampConverter.convertToString(cart.createdTime), items)
+    } yield (cart, items)
   }
 
   private def getCartItems(cartOption: Option[Cart]): Future[Seq[CartItem]] = {

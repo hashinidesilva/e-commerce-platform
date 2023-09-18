@@ -1,4 +1,4 @@
-package util
+package com.hashini.services.cart.util
 
 import com.typesafe.config.{Config, ConfigFactory}
 

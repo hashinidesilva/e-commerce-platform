@@ -1,15 +1,15 @@
 package com.hashini.services.cart.api.conveter
 
 import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport
-import com.hashini.services.cart.dto.{CartDTO, CartItemDTO, CartResponseDTO}
-import com.hashini.services.cart.persistence.model.savable.CartItem
+import com.hashini.services.cart.dto.{CartDTO, CartItemDTO, CartItemResponse, CartResponseDTO, ProductResponseDTO}
 import spray.json.{DefaultJsonProtocol, RootJsonFormat}
 
 trait JsonConverter extends DefaultJsonProtocol with SprayJsonSupport {
 
-  implicit val cartItemDTOFormat: RootJsonFormat[CartItemDTO] = jsonFormat5(CartItemDTO)
+  implicit val cartItemFormat: RootJsonFormat[CartItemDTO] = jsonFormat5(CartItemDTO)
   implicit val cartFormat: RootJsonFormat[CartDTO] = jsonFormat1(CartDTO)
-  implicit val cartItemFormat: RootJsonFormat[CartItem] = jsonFormat5(CartItem)
+  implicit val productFormat: RootJsonFormat[ProductResponseDTO] = jsonFormat7(ProductResponseDTO)
+  implicit val cartItemResponseFormat: RootJsonFormat[CartItemResponse] = jsonFormat5(CartItemResponse)
   implicit val cartResponseFormat: RootJsonFormat[CartResponseDTO] = jsonFormat4(CartResponseDTO)
 
 }

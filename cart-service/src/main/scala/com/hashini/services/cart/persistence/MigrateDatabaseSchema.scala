@@ -1,8 +1,8 @@
 package com.hashini.services.cart.persistence
 
+import com.hashini.services.cart.util.DefaultConfiguration
 import org.flywaydb.core.Flyway
 import org.flywaydb.core.api.output.MigrateResult
-import util.DefaultConfiguration
 
 object MigrateDatabaseSchema {
 

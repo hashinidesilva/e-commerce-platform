@@ -6,7 +6,7 @@ import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Route
 import com.hashini.services.cart.api.routes.CartRoute
 import com.hashini.services.cart.handler.CartHandler
-import util.DefaultConfiguration
+import com.hashini.services.cart.util.DefaultConfiguration
 
 import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
