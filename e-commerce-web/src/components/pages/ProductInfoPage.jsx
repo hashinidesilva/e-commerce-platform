@@ -1,5 +1,5 @@
+import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
-import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { Box, Button, Card, CardContent, Divider, Stack, Typography } from "@mui/material";
 import InventoryIcon from '@mui/icons-material/Inventory';
@@ -8,12 +8,14 @@ import { QuantityCounter } from "../common/QuantityCounter.jsx";
 import { cartActions } from "../../store/store.jsx";
 import { useProduct } from "../../hooks/useProduct.jsx";
 import { useAddCart } from "../../hooks/useAddCart.jsx";
+import { CartContext } from "../../store/cart-context.jsx";
 
 export const ProductInfoPage = () => {
   const {productId} = useParams();
   const [quantity, setQuantity] = useState(1);
   const [addToCart, setAddToCart] = useState(false);
   const dispatch = useDispatch();
+  const cartCtx = useContext(CartContext);
   const {data} = useProduct(productId);
   const {mutate: cartFunc} = useAddCart();
 
@@ -26,6 +28,8 @@ export const ProductInfoPage = () => {
         quantity
       }]
     });
+    // console.log("PPP", xx);
+    // cartCtx.addItem()
     dispatch(cartActions.add({id, name, unitPrice, quantity}));
     setAddToCart(true);
   };

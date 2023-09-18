@@ -13,16 +13,18 @@ const SummaryLine = ({title, value}) => {
     </Stack>
   );
 };
-export const OrderSummary = () => {
+export const OrderSummary = ({subTotal}) => {
+  const shippingFee = subTotal > 0 ? 100 : 0;
+  const total = subTotal + shippingFee;
   return (
     <Card sx={{padding: 2}}>
       <Typography variant="h5">Summary</Typography>
       <Box sx={{my: 3}}>
-        <SummaryLine title={'Subtotal'} value={10}/>
-        <SummaryLine title={'Shipping fee'} value={100}/>
-        <SummaryLine title={'Total'} value={110}/>
+        <SummaryLine title={'Subtotal'} value={subTotal}/>
+        {subTotal > 0 && <SummaryLine title={'Shipping fee'} value={shippingFee}/>}
+        <SummaryLine title={'Total'} value={total}/>
       </Box>
-      <Button fullWidth variant="contained" sx={{backgroundColor: "#ffb300", color: "black"}}>
+      <Button fullWidth variant="contained" sx={{backgroundColor: "#ffb300", color: "black"}} disabled={total <= 0}>
         Proceed to checkout
       </Button>
     </Card>
@@ -32,4 +34,8 @@ export const OrderSummary = () => {
 SummaryLine.propTypes = {
   title: PropTypes.string,
   value: PropTypes.number
+};
+
+OrderSummary.propTypes = {
+  subTotal: PropTypes.number
 };

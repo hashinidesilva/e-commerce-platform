@@ -7,7 +7,7 @@ export const QuantityCounter = ({quantity, setQuantity, width = '20%'}) => {
   const handleChange = (event) => {
     const regex = /^[0-9\b]+$/;
     if (event.target.value === "" || regex.test(event.target.value)) {
-      setQuantity(event.target.value);
+      setQuantity(+event.target.value);
     }
   };
   return (
