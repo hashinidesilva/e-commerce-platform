@@ -4,7 +4,7 @@ import com.hashini.services.product.dto.{ProductDTO, ProductResponseDTO, Product
 import com.hashini.services.product.persistence.dao.ProductDAO
 
 import scala.concurrent.{ExecutionContext, Future}
-import scala.util.{Failure, Success, Try}
+import scala.util.Try
 
 class ProductHandler(productDAO: ProductDAO)(implicit executionContext: ExecutionContext) {
 
