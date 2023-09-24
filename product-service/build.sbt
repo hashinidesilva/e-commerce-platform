@@ -7,7 +7,7 @@ val AkkaHttpVersion = "10.5.2"
 
 lazy val root = (project in file("."))
   .settings(
-    name := "Product",
+    name := "product-service",
     libraryDependencies ++= Seq(
       "com.typesafe.akka" %% "akka-actor-typed" % AkkaVersion,
       "com.typesafe.akka" %% "akka-stream" % AkkaVersion,
