@@ -5,6 +5,7 @@ import { HomePage } from "./components/pages/HomePage.jsx";
 import { ProductsPage } from "./components/pages/ProductsPage.jsx";
 import { ProductInfoPage } from "./components/pages/ProductInfoPage.jsx";
 import { CartPage } from "./components/pages/CartPage.jsx";
+import { CheckoutPageCopy } from "./components/pages/CheckoutPageCopy.jsx";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path="/products/:productName/dp/:productId" element={<ProductInfoPage/>}/>
           <Route path="/cart" element={<CartPage/>}/>
           <Route path=":category" element={<ProductsPage/>}/>
+          <Route path="/checkout" element={<CheckoutPageCopy/>}/>
         </Routes>
       </Box>
     </>

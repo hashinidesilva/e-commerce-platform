@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import { Box, Button, Card, Stack, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 
@@ -13,7 +14,8 @@ const SummaryLine = ({title, value}) => {
     </Stack>
   );
 };
-export const OrderSummary = ({subTotal}) => {
+export const OrderSummary = ({subTotal, isInCheckout = false}) => {
+  const navigate = useNavigate();
   const shippingFee = subTotal > 0 ? 100 : 0;
   const total = subTotal + shippingFee;
   return (
@@ -24,9 +26,18 @@ export const OrderSummary = ({subTotal}) => {
         {subTotal > 0 && <SummaryLine title={'Shipping fee'} value={shippingFee}/>}
         <SummaryLine title={'Total'} value={total}/>
       </Box>
-      <Button fullWidth variant="contained" sx={{backgroundColor: "#ffb300", color: "black"}} disabled={total <= 0}>
-        Proceed to checkout
-      </Button>
+      {isInCheckout && (
+        <Button fullWidth variant="contained" sx={{backgroundColor: "#ffb300", color: "black"}}
+                onClick={() => navigate("/")}>
+          Place Order
+        </Button>
+      )}
+      {!isInCheckout && (
+        <Button fullWidth variant="contained" sx={{backgroundColor: "#ffb300", color: "black"}} disabled={total <= 0}
+                onClick={() => navigate("/checkout")}>
+          Proceed to checkout
+        </Button>
+      )}
     </Card>
   );
 };
@@ -37,5 +48,6 @@ SummaryLine.propTypes = {
 };
 
 OrderSummary.propTypes = {
-  subTotal: PropTypes.number
+  subTotal: PropTypes.number,
+  isInCheckout: PropTypes.bool
 };

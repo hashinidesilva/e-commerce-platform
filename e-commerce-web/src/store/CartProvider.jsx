@@ -1,6 +1,6 @@
-import { CartContext } from "./cart-context.jsx";
-import PropTypes from "prop-types";
 import { useState } from "react";
+import PropTypes from "prop-types";
+import { CartContext } from "./cart-context.jsx";
 
 export const CartProvider = (props) => {
   const [items, setItems] = useState([]);
@@ -8,21 +8,20 @@ export const CartProvider = (props) => {
   const addItem = (newItem) => {
     const index = items.findIndex(item => item.id === newItem.id);
     if (index > -1) {
-      items[index].quantity = items[index].quantity + newItem.quantity;
-      setItems(items);
+      const existingItems = [...items];
+      existingItems[index].quantity = newItem.quantity;
+      setItems(existingItems);
     } else {
       setItems((prev) => [{id: newItem.id, productId: newItem.product.id, quantity: newItem.quantity}, ...prev]);
     }
   };
 
-  // const addItems = (items) = {
-  //   items.map(newItem => addItem(newItem))
-  // };
   const changeQuantity = (id, quantity) => {
     const index = items.findIndex(item => item.id === id);
-    if (index) {
-      items[index].quantity = quantity;
-      setItems(items);
+    if (index > -1) {
+      const existingItems = [...items];
+      existingItems[index].quantity = quantity;
+      setItems(existingItems);
     }
   };
 
