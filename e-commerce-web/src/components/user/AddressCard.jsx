@@ -8,7 +8,7 @@ const addresses = [{
   name: "Test name",
   address: "Test",
   city: "Test city",
-  province: "Test province",
+  province: "Central",
   phoneNumber: '0111111',
   postalCode: "1111"
 },
@@ -17,7 +17,7 @@ const addresses = [{
     name: "Test name1",
     address: "Test1",
     city: "Test city",
-    province: "Test province",
+    province: "NorthWestern",
     phoneNumber: '0111111',
     postalCode: "1111"
   }];

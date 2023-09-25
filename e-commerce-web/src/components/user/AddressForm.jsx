@@ -5,15 +5,31 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
   Stack,
   TextField,
   Typography
 } from "@mui/material";
 import PropTypes from "prop-types";
 
+const PROVINCES = [
+  {label: "Central", value: "Central"},
+  {label: "Eastern", value: "Eastern"},
+  {label: "North Central", value: "NorthCentral"},
+  {label: "North Western", value: "NorthWestern"},
+  {label: "Nothern", value: "Nothern"},
+  {label: "Sabaragamuwa", value: "Sabaragamuwa"},
+  {label: "Southern", value: "Southern"},
+  {label: "Uva", value: "Uva"},
+  {label: "Western", value: "Western"},
+];
+
 export const AddressForm = ({isOpen, handleClose, address = undefined}) => {
   return (
-    <Dialog open={isOpen} onClose={handleClose}>
+    <Dialog open={isOpen} onClose={handleClose} maxWidth="md" fullWidth={true}>
       <DialogTitle>
         {address ? "Edit Shipping Address" : "Add a new address"}
       </DialogTitle>
@@ -43,13 +59,17 @@ export const AddressForm = ({isOpen, handleClose, address = undefined}) => {
             value={address?.address}
           />
           <Stack direction="row" spacing={4}>
-            <TextField
-              required
-              id="province"
-              label="Province"
-              sx={{flexGrow: 2.5}}
-              value={address?.province}
-            />
+            <FormControl sx={{flexGrow: 2.5}} required>
+              <InputLabel id="province">Province</InputLabel>
+              <Select
+                label="Province"
+                value={address?.province}
+              >
+                {PROVINCES.map((province) => (
+                  <MenuItem key={province.value} value={province.value}>{province.label}</MenuItem>
+                ))}
+              </Select>
+            </FormControl>
             <TextField
               required
               id="city"
