@@ -19,8 +19,8 @@ export const OrderSummary = ({subTotal, isInCheckout = false}) => {
   const shippingFee = subTotal > 0 ? 100 : 0;
   const total = subTotal + shippingFee;
   return (
-    <Card sx={{padding: 2}}>
-      <Typography variant="h5">Summary</Typography>
+    <Card sx={{padding: 3}}>
+      <Typography variant="h5" fontWeight={600}>Summary</Typography>
       <Box sx={{my: 3}}>
         <SummaryLine title={'Subtotal'} value={subTotal}/>
         {subTotal > 0 && <SummaryLine title={'Shipping fee'} value={shippingFee}/>}

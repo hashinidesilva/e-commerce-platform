@@ -3,10 +3,10 @@ import { OrderSummary } from "../order/OrderSummary.jsx";
 import { AddressCard } from "../user/AddressCard.jsx";
 import { PaymentMethods } from "../user/PaymentMethods.jsx";
 
-export const CheckoutPageCopy = () => {
+export const CheckoutPage = () => {
   return (
     <Grid container spacing={2}
-          sx={{marginTop: "50px", display: 'flex', justifyContent: "center", paddingLeft: '10rem'}}>
+          sx={{marginTop: "2rem", display: 'flex', justifyContent: "center", padding: '3rem'}}>
       <Grid item xs={8}>
         <Grid container spacing={2} direction={"column"}>
           <Grid item>
