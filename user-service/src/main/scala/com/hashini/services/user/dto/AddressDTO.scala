@@ -8,8 +8,17 @@ case class AddressDTO(fullName: String,
                       province: String,
                       city: String,
                       postalCode: Int,
-                      idDefault: Boolean) {
+                      isDefault: Boolean,
+                      id: Option[Int]) {
   def getAddress(userId: Int): Address = {
-    Address(fullName, phoneNumber, address, province, city, postalCode, userId, idDefault)
+    Address(fullName,
+      phoneNumber,
+      address,
+      province,
+      city,
+      postalCode,
+      userId,
+      isDefault,
+      id.getOrElse(0))
   }
 }

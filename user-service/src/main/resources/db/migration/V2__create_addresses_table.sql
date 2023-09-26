@@ -14,4 +14,4 @@ CREATE TABLE addresses
 
 INSERT INTO addresses(id, user_id, full_name, phone_number, address, province, city, postal_code, is_default)
 VALUES (1, 1, 'Test name1', 12345678, 'Test Address1', 'Southern', 'Matara', 81000, true),
-       (2, 1, 'Test name2', 87654321, 'Test Address2', 'North', 'Jaffna', 7100, false);
+       (2, 1, 'Test name2', 87654321, 'Test Address2', 'Eastern', 'Jaffna', 7100, false);

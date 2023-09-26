@@ -7,6 +7,6 @@ import spray.json.{DefaultJsonProtocol, RootJsonFormat}
 trait JsonConverter extends DefaultJsonProtocol with SprayJsonSupport {
 
   implicit val addressResponseDTO: RootJsonFormat[AddressResponseDTO] = jsonFormat9(AddressResponseDTO)
-  implicit val addressDTO: RootJsonFormat[AddressDTO] = jsonFormat7(AddressDTO)
+  implicit val addressDTO: RootJsonFormat[AddressDTO] = jsonFormat8(AddressDTO)
 
 }

@@ -12,27 +12,41 @@ import scala.util.{Failure, Success}
 object UserAddressRoutes extends JsonConverter {
 
   def route(addressHandler: AddressHandler): Route = pathPrefix("users" / IntNumber / "addresses") { userId =>
-    pathEnd {
-      concat(
-        post {
-          entity(as[AddressDTO]) { address =>
-            onComplete(addressHandler.addAddress(address, userId)) {
+    concat(
+      pathEnd {
+        concat(
+          post {
+            entity(as[AddressDTO]) { newAddress =>
+              onComplete(addressHandler.addAddress(newAddress, userId)) {
+                case Success(address) =>
+                  complete(address)
+                case Failure(ex) =>
+                  complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
+              }
+            }
+          },
+          get {
+            onComplete(addressHandler.getAddresses(userId)) {
+              case Success(addresses) =>
+                complete(addresses)
+              case Failure(ex) =>
+                complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
+            }
+          }
+        )
+      },
+      path(IntNumber) { addressId =>
+        put {
+          entity(as[AddressDTO]) { updatedAddress =>
+            onComplete(addressHandler.updateAddress(updatedAddress, userId, addressId)) {
               case Success(address) =>
                 complete(address)
               case Failure(ex) =>
                 complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
             }
           }
-        },
-        get {
-          onComplete(addressHandler.getAddresses(userId)) {
-            case Success(addresses) =>
-              complete(addresses)
-            case Failure(ex) =>
-              complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
-          }
         }
-      )
-    }
+      }
+    )
   }
 }
