@@ -27,8 +27,9 @@ export const CartProvider = (props) => {
 
   const removeItem = (id) => {
     const index = items.findIndex(item => item.id === id);
-    const updatedList = items.splice(index, 1);
-    setItems(updatedList);
+    const existingItems = [...items];
+    existingItems.splice(index, 1);
+    setItems(existingItems);
   };
 
   const setInitialItems = (items) => {

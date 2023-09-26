@@ -1,12 +1,10 @@
 import { useContext } from "react";
-import { useDispatch } from "react-redux";
 import { Card, CardContent, Checkbox, Divider, Grid, IconButton, Stack, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import DeleteIcon from '@mui/icons-material/Delete';
 import InventoryIcon from "@mui/icons-material/Inventory";
 import { QuantityCounter } from "../common/QuantityCounter.jsx";
 import { OrderSummary } from "../order/OrderSummary.jsx";
-import { cartActions } from "../../store/store.jsx";
 import { useCart } from "../../hooks/useCart.jsx";
 import { useDeleteCartItem } from "../../hooks/useDeleteCartItem.jsx";
 import { useUpdateCartItem } from "../../hooks/useUpdateCartItem.jsx";
@@ -42,7 +40,6 @@ const CartItem = ({item}) => {
   const cartCtx = useContext(CartContext);
   const {mutate: deleteFunc} = useDeleteCartItem();
   const {mutate: updateFunc} = useUpdateCartItem();
-  const dispatch = useDispatch();
   const onUpdateQuantity = (quantity) => {
     cartCtx.changeQuantity(item.id, quantity);
     updateFunc({
@@ -66,7 +63,7 @@ const CartItem = ({item}) => {
 
   const onItemRemove = (id) => {
     deleteFunc(id);
-    dispatch(cartActions.remove(id));
+    cartCtx.removeItem(id);
   };
 
   return (

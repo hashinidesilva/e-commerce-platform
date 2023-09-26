@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { useContext } from "react";
 import {
   Button,
-  Dialog, DialogActions,
+  Chip,
+  Dialog,
+  DialogActions,
   DialogContent,
   DialogTitle,
   Radio,
@@ -12,10 +14,11 @@ import {
 import CloseIcon from "@mui/icons-material/Close";
 import PropTypes from "prop-types";
 import { AddressItem } from "./AddressItem.jsx";
-import { AddressForm } from "./AddressForm.jsx";
+import { AddressContext } from "../../store/address-context.jsx";
 
-const Address = ({address}) => {
-  const [isEdit, setIsEdit] = useState(false);
+const Address = ({address, selectedAddress, onEditAddress}) => {
+  const isDefault = address?.isDefault ?? false;
+
   return (
     <Stack
       direction={"row"}
@@ -24,29 +27,48 @@ const Address = ({address}) => {
         border: 1,
         borderColor: "#e0e0e0",
         borderRadius: '0.3rem',
-        padding: '1rem 1rem 1rem 0rem',
+        padding: '1rem 1rem 1rem 0.5rem',
         marginY: 1
       }}
     >
-      <Stack direction={"row"}>
+      <Stack direction={"row"} spacing={1}>
         <Radio
           value={address?.id}
           name="addresses"
+          checked={address?.id === selectedAddress?.id}
         />
-        <AddressItem address={address}/>
+        <Stack direction={"row"} spacing={1}>
+          <AddressItem address={address}/>
+          {isDefault && <Chip label="Default" size="small" sx={{flexGrow: 2.5}}/>}
+        </Stack>
       </Stack>
-      <Typography variant="subtitle2" sx={{color: "#00838f", '&:hover': {cursor: 'grab'}}}
-                  onClick={() => setIsEdit(true)}>
-        Edit
-      </Typography>
-      <AddressForm isOpen={isEdit} handleClose={() => setIsEdit(false)} address={address}/>
+      <Stack alignItems={"flex-end"}>
+        <Typography variant="subtitle2" sx={{color: "#00838f", '&:hover': {cursor: 'grab'}}}
+                    onClick={onEditAddress}>
+          Edit
+        </Typography>
+        {!isDefault && (
+          <Typography variant="subtitle2" sx={{color: "#00838f", '&:hover': {cursor: 'grab'}}}>
+            Set as default
+          </Typography>
+        )}
+      </Stack>
     </Stack>
   );
 };
-export const Addresses = ({isOpen, handleClose, addresses}) => {
-  const [addNewAddress, setAddNewAddress] = useState(false);
+export const Addresses = ({isOpen, handleClose, onAddAddress, onEditAddress}) => {
+  const addressCtx = useContext(AddressContext);
+
+  const addresses = addressCtx.addresses;
+  const selectedAddress = addressCtx.selectedAddress;
+
+  const onAddressChange = (event) => {
+    const newAddress = addresses.find((address) => address.id === +event.target.value);
+    addressCtx.changeSelectedAddress(newAddress);
+  };
+
   return (
-    <Dialog open={isOpen} onClose={handleClose} maxWidth="sm" fullWidth={true}>
+    <Dialog open={isOpen} maxWidth="md" fullWidth={true}>
       <DialogTitle sx={{display: 'flex', justifyContent: "space-between", alignItems: "center"}}>
         Shipping Address
         <CloseIcon onClick={handleClose} sx={{'&:hover': {cursor: 'grab'}}}/>
@@ -54,18 +76,18 @@ export const Addresses = ({isOpen, handleClose, addresses}) => {
       <DialogContent>
         <RadioGroup
           name="addresses"
-          onChange={(event) => console.log(event.target.value)}>
-          {addresses.map((address) => (
-            <Address address={address} key={address?.id}/>
+          onChange={onAddressChange}>
+          {addresses?.map((address) => (
+            <Address address={address} key={address?.id} selectedAddress={selectedAddress}
+                     onEditAddress={onEditAddress}/>
           ))}
         </RadioGroup>
       </DialogContent>
       <DialogActions>
-        <Button sx={{backgroundColor: "#ffb300", color: "black"}} onClick={() => setAddNewAddress(true)}>
+        <Button sx={{backgroundColor: "#ffb300", color: "black"}} onClick={onAddAddress}>
           Add new address
         </Button>
       </DialogActions>
-      <AddressForm isOpen={addNewAddress} handleClose={() => setAddNewAddress(false)}/>
     </Dialog>
   );
 };
@@ -73,9 +95,12 @@ export const Addresses = ({isOpen, handleClose, addresses}) => {
 Addresses.propTypes = {
   isOpen: PropTypes.bool,
   handleClose: PropTypes.func,
-  addresses: PropTypes.array
+  onAddAddress: PropTypes.func,
+  onEditAddress: PropTypes.func
 };
 
 Address.propTypes = {
-  address: PropTypes.object
+  address: PropTypes.object,
+  selectedAddress: PropTypes.object,
+  onEditAddress: PropTypes.func
 };
