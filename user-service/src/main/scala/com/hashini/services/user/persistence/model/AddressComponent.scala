@@ -26,6 +26,8 @@ trait AddressComponent {
 
     def postalCode: Rep[Int] = column[Int]("postal_code")
 
+    def isDefault: Rep[Boolean] = column[Boolean]("is_default")
+
     override def * : ProvenShape[Address] = (fullName,
       phoneNumber,
       address,
@@ -33,6 +35,7 @@ trait AddressComponent {
       city,
       postalCode,
       userId,
+      isDefault,
       id) <> (Address.tupled, Address.unapply)
   }
 
