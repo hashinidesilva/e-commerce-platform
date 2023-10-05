@@ -3,45 +3,51 @@ import PropTypes from "prop-types";
 import { CartContext } from "./cart-context.jsx";
 
 export const CartProvider = (props) => {
-  const [items, setItems] = useState([]);
+  const [cart, setCart] = useState({});
+
+  const updateCart = (updatedCart) => {
+    setCart(updatedCart);
+  };
 
   const addItem = (newItem) => {
-    const index = items.findIndex(item => item.id === newItem.id);
+    const cartItems = cart?.items;
+    const index = cartItems.findIndex(item => item.id === newItem.id);
     if (index > -1) {
-      const existingItems = [...items];
+      const existingItems = [...cartItems];
       existingItems[index].quantity = newItem.quantity;
-      setItems(existingItems);
+      setCart(prev => ({...prev, items: existingItems}));
     } else {
-      setItems((prev) => [{id: newItem.id, productId: newItem.product.id, quantity: newItem.quantity}, ...prev]);
+      setCart(prev => ({
+        ...prev,
+        items: [{id: newItem.id, productId: newItem.product.id, quantity: newItem.quantity}, ...prev.items]
+      }));
     }
   };
 
   const changeQuantity = (id, quantity) => {
+    const items = cart?.items;
     const index = items.findIndex(item => item.id === id);
     if (index > -1) {
       const existingItems = [...items];
       existingItems[index].quantity = quantity;
-      setItems(existingItems);
+      setCart(prev => ({...prev, items: existingItems}));
     }
   };
 
   const removeItem = (id) => {
+    const items = cart?.items;
     const index = items.findIndex(item => item.id === id);
     const existingItems = [...items];
     existingItems.splice(index, 1);
-    setItems(existingItems);
-  };
-
-  const setInitialItems = (items) => {
-    setItems(items);
+    setCart(prev => ({...prev, items: existingItems}));
   };
 
   const cartContext = {
-    items: items,
+    cart: cart,
+    updateCart: updateCart,
     addItem: addItem,
     removeItem: removeItem,
     changeQuantity: changeQuantity,
-    setInitialItems: setInitialItems
   };
 
   return (

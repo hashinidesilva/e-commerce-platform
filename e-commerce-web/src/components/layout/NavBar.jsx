@@ -11,19 +11,20 @@ import { CartContext } from "../../store/cart-context.jsx";
 export const NavBar = () => {
   const navigate = useNavigate();
   const cartCtx = useContext(CartContext);
-  const items = cartCtx.items;
+  const items = cartCtx.cart?.items ?? [];
   const cartSize = items.reduce((acc, item) => acc + item?.quantity, 0);
 
   useEffect(() => {
     axios.get("http://localhost:9003/carts").then((response) => {
-      const cartItems = response.data?.items;
-      cartCtx.setInitialItems(cartItems?.map(item => {
-        return {
-          id: item.id,
-          productId: item.productId,
-          quantity: item.quantity
-        };
-      }));
+      if (response.status === 200) {
+        const cart = response.data;
+        cartCtx.updateCart(cart);
+      } else if (response.status === 204) {
+        axios.post("http://localhost:9003/carts", {userId: 1}).then(response => {
+          const cart = response.data;
+          cartCtx.updateCart(cart);
+        });
+      }
     });
   }, []);
 

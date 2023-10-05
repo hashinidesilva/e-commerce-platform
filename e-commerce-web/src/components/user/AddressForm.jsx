@@ -95,7 +95,7 @@ export const AddressForm = ({isOpen, handleClose, address = undefined}) => {
 
   const onSubmit = () => {
     const newAddress = {
-      fullName: name,
+      name: name,
       phoneNumber: +phoneNumber,
       address: streetAddress,
       province: province,

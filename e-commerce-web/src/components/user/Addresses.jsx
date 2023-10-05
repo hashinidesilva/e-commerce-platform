@@ -15,8 +15,9 @@ import CloseIcon from "@mui/icons-material/Close";
 import PropTypes from "prop-types";
 import { AddressItem } from "./AddressItem.jsx";
 import { AddressContext } from "../../store/address-context.jsx";
+import { useUpdateAddress } from "../../hooks/useUpdateAddress.jsx";
 
-const Address = ({address, selectedAddress, onEditAddress}) => {
+const Address = ({address, isChecked, onEditAddress, onSetDefault}) => {
   const isDefault = address?.isDefault ?? false;
 
   return (
@@ -35,7 +36,7 @@ const Address = ({address, selectedAddress, onEditAddress}) => {
         <Radio
           value={address?.id}
           name="addresses"
-          checked={address?.id === selectedAddress?.id}
+          checked={isChecked}
         />
         <Stack direction={"row"} spacing={1}>
           <AddressItem address={address}/>
@@ -44,11 +45,12 @@ const Address = ({address, selectedAddress, onEditAddress}) => {
       </Stack>
       <Stack alignItems={"flex-end"}>
         <Typography variant="subtitle2" sx={{color: "#00838f", '&:hover': {cursor: 'grab'}}}
-                    onClick={onEditAddress}>
+                    onClick={() => onEditAddress(address)}>
           Edit
         </Typography>
         {!isDefault && (
-          <Typography variant="subtitle2" sx={{color: "#00838f", '&:hover': {cursor: 'grab'}}}>
+          <Typography variant="subtitle2" sx={{color: "#00838f", '&:hover': {cursor: 'grab'}}}
+                      onClick={() => onSetDefault({...address, isDefault: true})}>
             Set as default
           </Typography>
         )}
@@ -58,9 +60,13 @@ const Address = ({address, selectedAddress, onEditAddress}) => {
 };
 export const Addresses = ({isOpen, handleClose, onAddAddress, onEditAddress}) => {
   const addressCtx = useContext(AddressContext);
+  const {mutate: updateFunc} = useUpdateAddress({
+    onSuccess: (updatedAddress) => {
+      addressCtx.updateAddress(updatedAddress);
+    }
+  });
 
   const addresses = addressCtx.addresses;
-  const selectedAddress = addressCtx.selectedAddress;
 
   const onAddressChange = (event) => {
     const newAddress = addresses.find((address) => address.id === +event.target.value);
@@ -78,8 +84,13 @@ export const Addresses = ({isOpen, handleClose, onAddAddress, onEditAddress}) =>
           name="addresses"
           onChange={onAddressChange}>
           {addresses?.map((address) => (
-            <Address address={address} key={address?.id} selectedAddress={selectedAddress}
-                     onEditAddress={onEditAddress}/>
+            <Address
+              key={address?.id}
+              address={address}
+              isChecked={address?.id === addressCtx.selectedAddress?.id}
+              // selectedAddress={selectedAddress}
+              onSetDefault={updateFunc}
+              onEditAddress={onEditAddress}/>
           ))}
         </RadioGroup>
       </DialogContent>
@@ -101,6 +112,7 @@ Addresses.propTypes = {
 
 Address.propTypes = {
   address: PropTypes.object,
-  selectedAddress: PropTypes.object,
-  onEditAddress: PropTypes.func
+  isChecked: PropTypes.bool,
+  onEditAddress: PropTypes.func,
+  onSetDefault: PropTypes.func
 };

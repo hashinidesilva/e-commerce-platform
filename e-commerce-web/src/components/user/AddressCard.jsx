@@ -11,6 +11,7 @@ export const AddressCard = () => {
   const [showAddressList, setShowAddressList] = useState(false);
   const [addNewAddress, setAddNewAddress] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
+  const [editAddress, setEditAddress] = useState({});
 
   useEffect(() => {
     axios.get("http://localhost:9004/users/1/addresses").then((response) => {
@@ -28,7 +29,8 @@ export const AddressCard = () => {
     setShowAddressList(false);
   };
 
-  const onEditAddress = () => {
+  const onEditAddress = (address) => {
+    setEditAddress(address);
     setIsEdit(true);
     setShowAddressList(false);
   };
@@ -68,7 +70,7 @@ export const AddressCard = () => {
       }
       {isEdit &&
         <AddressForm
-          address={addressCtx.selectedAddress}
+          address={editAddress}
           isOpen={isEdit}
           handleClose={() => {
             setShowAddressList(true);

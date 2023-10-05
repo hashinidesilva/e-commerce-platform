@@ -62,7 +62,7 @@ const CartItem = ({item}) => {
   };
 
   const onItemRemove = (id) => {
-    deleteFunc(id);
+    deleteFunc([cartCtx.cart?.id, id]);
     cartCtx.removeItem(id);
   };
 

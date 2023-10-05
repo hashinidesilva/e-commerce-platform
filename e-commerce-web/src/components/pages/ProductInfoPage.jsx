@@ -1,28 +1,47 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Box, Button, Card, CardContent, Divider, Stack, Typography } from "@mui/material";
 import InventoryIcon from '@mui/icons-material/Inventory';
 import { CartNavigation } from "../order/CartNavigation.jsx";
 import { QuantityCounter } from "../common/QuantityCounter.jsx";
 import { useProduct } from "../../hooks/useProduct.jsx";
-import { useAddCart } from "../../hooks/useAddCart.jsx";
+import { useAddCartItem } from "../../hooks/useAddCartItem.jsx";
+import { CartContext } from "../../store/cart-context.jsx";
 
 export const ProductInfoPage = () => {
   const {productId} = useParams();
+  const cartCtx = useContext(CartContext);
   const [quantity, setQuantity] = useState(1);
   const [addToCart, setAddToCart] = useState(false);
   const {data} = useProduct(productId);
-  const {mutate: cartFunc} = useAddCart();
+  const {mutate: cartFunc} = useAddCartItem({
+    onSuccess: (item) => {
+      cartCtx.addItem(item);
+    }
+  });
 
   const {id, name, unitPrice} = data ?? {};
+  const cartItems = cartCtx.cart?.items ?? [];
 
   const onAddToCart = () => {
-    cartFunc({
-      items: [{
+    const cart = cartCtx.cart;
+    const cartId = cart?.id;
+    const existingItem = cartItems.find(item => item?.product?.id === id);
+    if (existingItem) {
+      cartFunc({
+        cartId: cartId,
+        id: existingItem?.id,
+        selected: existingItem?.selected,
+        quantity: existingItem.quantity + quantity,
+        productId: id
+      });
+    } else {
+      cartFunc({
+        cartId: cartId,
         productId: id,
         quantity
-      }]
-    });
+      });
+    }
     setAddToCart(true);
   };
 
