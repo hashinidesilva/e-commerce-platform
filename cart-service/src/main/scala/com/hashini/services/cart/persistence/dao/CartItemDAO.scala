@@ -9,9 +9,7 @@ trait CartItemDAO {
 
   import profile.api._
 
-  def insertOrUpdate(item: CartItem): Future[Int]
-
-  def insertOrUpdateIO(item: CartItem): DBIOAction[CartItem, NoStream, Effect.Write]
+  def insertOrUpdate(item: CartItem): Future[CartItem]
 
   def getCartItems(cartId: Int): Future[Seq[CartItem]]
 

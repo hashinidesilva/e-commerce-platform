@@ -12,23 +12,18 @@ class DefaultCartDAO extends CartDAO {
 
   import profile.api._
 
-  override def getCart(userId: Int): Future[Option[Cart]] = {
+  override def getCartByUserId(userId: Int): Future[Option[Cart]] = {
     db.run(cartQuery.filter(_.userId === userId).result.headOption)
   }
 
-  override def insertOrUpdateIO(cart: Cart): DBIOAction[Cart, NoStream, Effect.Write] = {
-    for {
-      cartOption <- (cartQuery returning cartQuery).insertOrUpdate(cart)
-    } yield cartOption.getOrElse(cart)
+  override def getCart(id: Int): Future[Option[Cart]] = {
+    db.run(cartQuery.filter(_.id === id).result.headOption)
   }
 
-  /*  override def addCart(cartDTO: CartDTO): Future[CartResponseDTO] = {
-      val query = for {
-        cart <- (cartQuery returning cartQuery) += cartDTO.getCart
-        items = cartDTO.items
-        cartItems <- DBIO.sequence(items.map(item => cartItemDAO.insertCartItemIO(item.getCartItem(cart.id))))
-      } yield CartResponseDTO(cart.id, cart.userId, TimestampConverter.convertToString(cart.createdTime), cartItems)
-
-      db.run(query.transactionally)
-    }*/
+  override def insertOrUpdate(cart: Cart): Future[Cart] = {
+    val query = for {
+      cartOption <- (cartQuery returning cartQuery).insertOrUpdate(cart)
+    } yield cartOption.getOrElse(cart)
+    db.run(query)
+  }
 }

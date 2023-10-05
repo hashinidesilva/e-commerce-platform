@@ -9,7 +9,7 @@ case class Cart(userId: Int,
                 createdTime: Timestamp = new Timestamp(System.currentTimeMillis()),
                 id: Int = 0) {
 
-  def getCartResponseDTO(items: Seq[CartItemResponse]): CartResponseDTO = {
+  def getCartResponseDTO(items: Seq[CartItemResponse] = Seq()): CartResponseDTO = {
     CartResponseDTO(id, userId, TimestampConverter.convertToString(createdTime), items)
   }
 }

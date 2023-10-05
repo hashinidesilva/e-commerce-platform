@@ -12,14 +12,12 @@ class DefaultCartItemDAO extends CartItemDAO {
 
   import profile.api._
 
-  override def insertOrUpdate(item: CartItem): Future[Int] = {
-    db.run(cartItemQuery.insertOrUpdate(item))
-  }
-
-  override def insertOrUpdateIO(item: CartItem): DBIOAction[CartItem, NoStream, Effect.Write] = {
-    for {
+  override def insertOrUpdate(item: CartItem): Future[CartItem] = {
+    val query = for {
       itemOption <- (cartItemQuery returning cartItemQuery).insertOrUpdate(item)
     } yield itemOption.getOrElse(item)
+
+    db.run(query)
   }
 
   override def getCartItems(cartId: Int): Future[Seq[CartItem]] = {

@@ -3,8 +3,9 @@ package com.hashini.services.cart.api
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
+import akka.http.scaladsl.server.Directives.concat
 import akka.http.scaladsl.server.Route
-import com.hashini.services.cart.api.routes.CartRoute
+import com.hashini.services.cart.api.routes.{CartItemRoute, CartRoute}
 import com.hashini.services.cart.handler.CartHandler
 import com.hashini.services.cart.util.DefaultConfiguration
 
@@ -32,7 +33,10 @@ class RestServer(cartHandler: CartHandler) extends CORSHandler {
 
   private def createRoute(): Route = {
     corsHandler {
-      CartRoute.route(cartHandler)
+      concat(
+        CartRoute.route(cartHandler),
+        CartItemRoute.route(cartHandler)
+      )
     }
   }
 }

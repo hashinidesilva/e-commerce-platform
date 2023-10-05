@@ -1,10 +1,11 @@
 package com.hashini.services.cart.api.routes
 
+import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.model.StatusCodes.{InternalServerError, OK}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import com.hashini.services.cart.api.conveter.JsonConverter
-import com.hashini.services.cart.dto.{CartDTO, CartItemDTO, UpdateCartItem}
+import com.hashini.services.cart.dto.{CartDTO, UpdateCartItem}
 import com.hashini.services.cart.handler.CartHandler
 
 import scala.util.{Failure, Success}
@@ -21,7 +22,7 @@ object CartRoute extends JsonConverter {
                   case Some(cart) =>
                     complete(cart)
                   case None =>
-                    complete(OK -> "No cart found")
+                    complete(StatusCodes.NoContent -> "No cart found")
                 }
               case Failure(ex) =>
                 complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
@@ -37,39 +38,19 @@ object CartRoute extends JsonConverter {
               }
             }
           },
-          patch {
-            entity(as[UpdateCartItem]) { cartItem =>
-              onComplete(cartHandler.updateSelected(cartItem.cartId, cartItem.selected)) {
-                case Success(_) =>
-                  complete(OK)
-                case Failure(ex) =>
-                  complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
-              }
-            }
-          }
         )
       },
-      path(IntNumber) { id =>
-        concat(
-          delete {
-            onComplete(cartHandler.deleteItem(id)) {
+      path(IntNumber) { cartId =>
+        patch {
+          entity(as[UpdateCartItem]) { cartItem =>
+            onComplete(cartHandler.updateSelected(cartId, cartItem.selected)) {
               case Success(_) =>
                 complete(OK)
               case Failure(ex) =>
                 complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
             }
-          },
-          put {
-            entity(as[CartItemDTO]) { cart =>
-              onComplete(cartHandler.updateItem(id, cart)) {
-                case Success(_) =>
-                  complete(OK)
-                case Failure(ex) =>
-                  complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
-              }
-            }
           }
-        )
+        }
       }
     )
   }
