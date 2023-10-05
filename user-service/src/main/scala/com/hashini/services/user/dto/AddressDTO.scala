@@ -2,7 +2,7 @@ package com.hashini.services.user.dto
 
 import com.hashini.services.user.persistence.model.savable.Address
 
-case class AddressDTO(fullName: String,
+case class AddressDTO(name: String,
                       phoneNumber: Int,
                       address: String,
                       province: String,
@@ -11,7 +11,7 @@ case class AddressDTO(fullName: String,
                       isDefault: Boolean,
                       id: Option[Int]) {
   def getAddress(userId: Int): Address = {
-    Address(fullName,
+    Address(name,
       phoneNumber,
       address,
       province,
