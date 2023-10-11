@@ -14,4 +14,8 @@ class DefaultRatingDAO extends RatingDAO {
   override def getRatings(productId: Int): Future[Seq[Rating]] = {
     db.run(ratingQuery.filter(_.productId === productId).result)
   }
+
+  override def insert(rating: Rating): Future[Rating] = {
+    db.run((ratingQuery returning ratingQuery) += rating)
+  }
 }

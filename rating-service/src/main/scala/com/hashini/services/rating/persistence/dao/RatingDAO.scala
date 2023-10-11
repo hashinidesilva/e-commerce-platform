@@ -8,4 +8,6 @@ trait RatingDAO {
 
   def getRatings(productId: Int): Future[Seq[Rating]]
 
+  def insert(rating: Rating): Future[Rating]
+
 }

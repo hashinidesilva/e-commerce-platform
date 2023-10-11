@@ -17,5 +17,6 @@ lazy val root = (project in file("."))
       "org.postgresql" % "postgresql" % "42.6.0",
       "com.typesafe.slick" %% "slick" % "3.4.1",
       "com.typesafe.slick" %% "slick-hikaricp" % "3.4.1",
+      "com.rabbitmq" % "amqp-client" % "5.19.0"
     )
   )
