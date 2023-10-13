@@ -6,14 +6,14 @@ import akka.http.scaladsl.server.Route
 import com.hashini.services.rating.api.converter.JsonConverter
 import com.hashini.services.rating.dto.RatingDTO
 import com.hashini.services.rating.handler.RatingHandler
-import com.hashini.services.rating.rabbitmq.Publisher
+import com.hashini.services.rating.rabbitmq.ProductClient
 
 import scala.util.{Failure, Success}
 
 object RatingRoute extends JsonConverter {
 
   def route(ratingHandler: RatingHandler,
-            publisher: Publisher): Route = pathPrefix("ratings") {
+            productClient: ProductClient): Route = pathPrefix("ratings") {
     pathEnd {
       concat(
         get {
@@ -30,7 +30,7 @@ object RatingRoute extends JsonConverter {
           entity(as[RatingDTO]) { newRating =>
             onComplete(ratingHandler.addRating(newRating)) {
               case Success(rating) =>
-                publisher.publishMessage(rating.toString)
+                productClient.sendMessage(rating.toString)
                 complete(rating)
               case Failure(ex) =>
                 complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
