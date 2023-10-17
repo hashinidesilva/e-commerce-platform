@@ -36,4 +36,9 @@ class DefaultProductDAO extends ProductDAO {
         Failure(new Exception(s"Product item is not found for id: $id"))
     }
   }
+
+  override def updateAverageRating(id: Int,
+                                   rating: Double): Future[Int] = {
+    db.run(productQuery.filter(_.id === id).map(_.averageRating).update(rating))
+  }
 }

@@ -14,4 +14,7 @@ trait ProductDAO {
 
   def load(id: Int): Future[Try[ProductItem]]
 
+  def updateAverageRating(id: Int,
+                          rating: Double): Future[Int]
+
 }

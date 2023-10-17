@@ -11,6 +11,7 @@ case class ProductItem(name: String,
                        quantity: Int,
                        createdTime: Timestamp = new Timestamp(System.currentTimeMillis()),
                        updatedTime: Timestamp = new Timestamp(System.currentTimeMillis()),
+                       averageRating: Double = 0,
                        id: Int = 0,
                        categoryId: Int = 0) {
 
@@ -21,6 +22,7 @@ case class ProductItem(name: String,
       unitPrice,
       description,
       TimestampConverter.convertToString(createdTime),
-      TimestampConverter.convertToString(updatedTime))
+      TimestampConverter.convertToString(updatedTime),
+      averageRating)
   }
 }

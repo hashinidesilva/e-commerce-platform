@@ -28,6 +28,8 @@ trait ProductComponent {
 
     def updatedTime: Rep[Timestamp] = column[Timestamp]("updated_time")
 
+    def averageRating: Rep[Double] = column[Double]("average_rating")
+
     def category: ForeignKeyQuery[CategoryTable, Category] = foreignKey("fk_category", categoryId,
       categoryQuery)(_.id)
 
@@ -37,6 +39,7 @@ trait ProductComponent {
       quantity,
       createdTime,
       updatedTime,
+      averageRating,
       id,
       categoryId) <> (ProductItem.tupled, ProductItem.unapply)
   }

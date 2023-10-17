@@ -6,4 +6,5 @@ case class ProductResponseDTO(id: Int,
                               unitPrice: Double,
                               description: String,
                               createdTime: String,
-                              updatedTime: String)
+                              updatedTime: String,
+                              averageRating: Double)
