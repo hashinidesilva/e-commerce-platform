@@ -11,10 +11,10 @@ import scala.concurrent.ExecutionContext.Implicits.global
 object Main extends App {
 
   private val ratingDAO = new DefaultRatingDAO()
-  private val ratingHandler = new RatingHandler(ratingDAO)
   private val productClient = new ProductClient("product")
+  private val ratingHandler = new RatingHandler(ratingDAO, productClient)
 
-  new RestServer(ratingHandler, productClient).createServer()
+  new RestServer(ratingHandler).createServer()
   MigrateDatabaseSchema.migrate()
 
 }

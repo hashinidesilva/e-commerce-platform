@@ -12,8 +12,7 @@ import com.hashini.services.rating.util.DefaultConfiguration
 import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
 
-class RestServer(ratingHandler: RatingHandler,
-                 productClient: ProductClient) {
+class RestServer(ratingHandler: RatingHandler) {
 
   implicit val system: ActorSystem[Nothing] = ActorSystem(Behaviors.empty, "rating")
   implicit val executionContext: ExecutionContext = system.executionContext
@@ -33,7 +32,7 @@ class RestServer(ratingHandler: RatingHandler,
   }
 
   private def createRoute(): Route = {
-    RatingRoute.route(ratingHandler, productClient)
+    RatingRoute.route(ratingHandler)
   }
 
 }

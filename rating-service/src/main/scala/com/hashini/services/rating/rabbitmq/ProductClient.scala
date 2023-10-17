@@ -6,7 +6,7 @@ import com.rabbitmq.client.{BuiltinExchangeType, Channel}
 class ProductClient(name: String) {
 
   private val queueName: String = name
-  private val exchangeName: String = queueName
+  private val exchangeName: String = queueName + "-exchange"
   private val connection = RabbitConnection.connection
   private val channel = connection.createChannel()
   createExchange(channel)
@@ -15,7 +15,7 @@ class ProductClient(name: String) {
   channel.confirmSelect()
 
   def sendMessage(message: String): Unit = {
-    channel.basicPublish("", queueName, null, message.getBytes("UTF-8"))
+    channel.basicPublish(exchangeName, "", null, message.getBytes("UTF-8"))
     println("Message sent: " + message)
   }
 
