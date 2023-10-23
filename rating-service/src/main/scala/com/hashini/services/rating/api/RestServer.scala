@@ -12,7 +12,7 @@ import com.typesafe.scalalogging.LazyLogging
 import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
 
-class RestServer(ratingHandler: RatingHandler) extends LazyLogging {
+class RestServer(ratingHandler: RatingHandler) extends CORSHandler with LazyLogging {
 
   implicit val system: ActorSystem[Nothing] = ActorSystem(Behaviors.empty, "rating")
   implicit val executionContext: ExecutionContext = system.executionContext
@@ -32,7 +32,9 @@ class RestServer(ratingHandler: RatingHandler) extends LazyLogging {
   }
 
   private def createRoute(): Route = {
-    RatingRoute.route(ratingHandler)
+    corsHandler(
+      RatingRoute.route(ratingHandler)
+    )
   }
 
 }
