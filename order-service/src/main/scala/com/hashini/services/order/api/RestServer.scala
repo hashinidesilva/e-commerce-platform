@@ -6,11 +6,12 @@ import akka.http.scaladsl.Http
 import com.hashini.services.order.api.routes.OrderRoutes
 import com.hashini.services.order.handler.OrderHandler
 import com.hashini.services.order.util.DefaultConfiguration
+import com.typesafe.scalalogging.LazyLogging
 
 import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
 
-class RestServer(orderHandler: OrderHandler) {
+class RestServer(orderHandler: OrderHandler) extends LazyLogging {
   implicit val system: ActorSystem[_] = ActorSystem(Behaviors.empty, "order")
   implicit val executionContext: ExecutionContext = system.executionContext
 
@@ -22,9 +23,9 @@ class RestServer(orderHandler: OrderHandler) {
 
     server onComplete {
       case Success(_) =>
-        println("Successfully started the server")
+        logger.info("Successfully started the server")
       case Failure(exception) =>
-        println("An error occurred when starting the server" + exception.getMessage)
+        logger.error("An error occurred when starting the server", exception)
     }
   }
 }
