@@ -2,7 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 
 const updateItem = async (item) => {
-  const response = await axios.put(`http://localhost:9003/carts/${item.id}`, item);
+  const response = await axios.put(`http://localhost:9003/carts/${item.cartId}/items/${item.id}`, item);
   return response.data;
 };
 export const useUpdateCartItem = () => {
