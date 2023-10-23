@@ -2,8 +2,9 @@ package com.hashini.services.rating.rabbitmq
 
 import com.rabbitmq.client.AMQP.{Exchange, Queue}
 import com.rabbitmq.client.{BuiltinExchangeType, Channel}
+import com.typesafe.scalalogging.LazyLogging
 
-class ProductClient(name: String) {
+class ProductClient(name: String) extends LazyLogging {
 
   private val queueName: String = name
   private val exchangeName: String = queueName + "-exchange"
@@ -16,7 +17,7 @@ class ProductClient(name: String) {
 
   def sendMessage(message: String): Unit = {
     channel.basicPublish(exchangeName, "", null, message.getBytes("UTF-8"))
-    println("Message sent: " + message)
+    logger.info("Message sent: " + message)
   }
 
   private def createExchange(channel: Channel): Exchange.DeclareOk = {

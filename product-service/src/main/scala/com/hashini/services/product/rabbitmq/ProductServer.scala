@@ -5,13 +5,14 @@ import com.hashini.services.product.handler.ProductHandler
 import com.hashini.services.product.util.PrivateExecutionContext.executionContext
 import com.rabbitmq.client.AMQP.{Exchange, Queue}
 import com.rabbitmq.client.{BuiltinExchangeType, CancelCallback, DeliverCallback}
+import com.typesafe.scalalogging.LazyLogging
 import spray.json.DefaultJsonProtocol._
 import spray.json._
 
 import scala.util.{Failure, Success, Try}
 
 class ProductServer(name: String,
-                    handler: ProductHandler) {
+                    handler: ProductHandler) extends LazyLogging {
 
   implicit val ratingFormatter: JsonFormat[ProductRatingDTO] = jsonFormat2(ProductRatingDTO)
 
@@ -37,12 +38,12 @@ class ProductServer(name: String,
       case Success(productRatingDTO) =>
         handler.updateRating(productRatingDTO) onComplete {
           case Success(_) =>
-            println(s"Successfully handled received message [$message]")
+            logger.info(s"Successfully handled received message [$message]")
           case Failure(ex) =>
-            println(s"Error occurred when handling received message [$message], $ex")
+            logger.error(s"Error occurred when handling received message [$message]", ex)
         }
       case Failure(ex) =>
-        println(ex)
+        logger.error("Error occurred when handling message", ex)
     }
 
 

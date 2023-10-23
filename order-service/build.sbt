@@ -17,5 +17,7 @@ lazy val root = (project in file("."))
       "org.postgresql" % "postgresql" % "42.6.0",
       "com.typesafe.slick" %% "slick" % "3.4.1",
       "com.typesafe.slick" %% "slick-hikaricp" % "3.4.1",
+      "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5",
+      "ch.qos.logback" % "logback-classic" % "1.4.11"
     )
   )

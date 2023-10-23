@@ -19,6 +19,8 @@ lazy val root = (project in file("."))
       "com.typesafe.slick" %% "slick-hikaricp" % "3.4.1",
       "com.softwaremill.sttp.client3" %% "akka-http-backend" % "3.9.0",
       "com.softwaremill.sttp.client3" %% "json4s" % "3.9.0",
-      "org.json4s" %% "json4s-native" % "4.0.6"
+      "org.json4s" %% "json4s-native" % "4.0.6",
+      "com.typesafe.scala-logging" %% "scala-logging" % "3.9.5",
+      "ch.qos.logback" % "logback-classic" % "1.4.11"
     )
   )

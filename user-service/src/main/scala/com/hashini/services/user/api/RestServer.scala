@@ -7,11 +7,12 @@ import akka.http.scaladsl.server.Route
 import com.hashini.services.user.api.routes.UserAddressRoutes
 import com.hashini.services.user.handler.AddressHandler
 import com.hashini.services.user.util.DefaultConfiguration
+import com.typesafe.scalalogging.LazyLogging
 
 import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
 
-class RestServer(addressHandler: AddressHandler) extends CORSHandler {
+class RestServer(addressHandler: AddressHandler) extends CORSHandler with LazyLogging {
 
   implicit val system: ActorSystem[_] = ActorSystem(Behaviors.empty, "user")
   implicit val executionContext: ExecutionContext = system.executionContext
@@ -24,9 +25,9 @@ class RestServer(addressHandler: AddressHandler) extends CORSHandler {
 
     server onComplete {
       case Success(_) =>
-        println("Successfully started the server")
+        logger.info("Successfully started the server")
       case Failure(exception) =>
-        println("An error occurred when starting the server" + exception.getMessage)
+        logger.error("An error occurred when starting the server", exception)
     }
   }
 

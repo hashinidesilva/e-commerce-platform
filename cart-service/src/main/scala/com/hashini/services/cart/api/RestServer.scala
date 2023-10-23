@@ -8,11 +8,12 @@ import akka.http.scaladsl.server.Route
 import com.hashini.services.cart.api.routes.{CartItemRoute, CartRoute}
 import com.hashini.services.cart.handler.CartHandler
 import com.hashini.services.cart.util.DefaultConfiguration
+import com.typesafe.scalalogging.LazyLogging
 
 import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
 
-class RestServer(cartHandler: CartHandler) extends CORSHandler {
+class RestServer(cartHandler: CartHandler) extends CORSHandler with LazyLogging {
 
   implicit val system: ActorSystem[Nothing] = ActorSystem(Behaviors.empty, "cart")
   implicit val executionContext: ExecutionContext = system.executionContext
@@ -25,9 +26,9 @@ class RestServer(cartHandler: CartHandler) extends CORSHandler {
 
     server onComplete {
       case Success(_) =>
-        println("Successfully started the server")
+        logger.info("Successfully started the server")
       case Failure(exception) =>
-        println("An error occurred when starting the server" + exception.getMessage)
+        logger.error("An error occurred when starting the server", exception)
     }
   }
 
