@@ -1,33 +1,21 @@
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
-import { Box, Card, Typography } from "@mui/material";
+import { Card, Typography } from "@mui/material";
 
 export const EmptyCart = () => {
   return (
-    <Box
+    <Card
       sx={{
-        display: 'flex',
-        position: 'absolute',
-        top: '0',
-        bottom: '0',
-        alignItems: 'center',
-        justifyContent: 'center',
         width: '100%',
-        zIndex: '-1',
-
-      }}>
-      <Card sx={{
-        width: '60%',
-        height: '40%',
+        minHeight: "60vh",
         alignItems: 'center',
         justifyContent: 'center',
         display: 'flex',
-        flexDirection: 'column'
+        flexDirection: 'column',
       }}>
-        <AddShoppingCartIcon sx={{fontSize: 80, marginBottom: 2}}/>
-        <Typography variant="h4" component="h2">
-          {"Your cart is empty"}
-        </Typography>
-      </Card>
-    </Box>
+      <AddShoppingCartIcon sx={{fontSize: 80, marginBottom: 2}}/>
+      <Typography variant="h4" component="h2">
+        {"Your cart is empty"}
+      </Typography>
+    </Card>
   );
 };

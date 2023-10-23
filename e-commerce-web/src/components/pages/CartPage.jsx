@@ -101,7 +101,7 @@ export const CartPage = () => {
       {(items.length === 0 && !isLoading) && <EmptyCart/>}
       {(items.length > 0 && !isLoading) &&
         <Grid container spacing={2}
-              sx={{marginTop: "50px", display: 'flex', justifyContent: "center"}}>
+              sx={{display: 'flex', justifyContent: "center"}}>
           <Grid item xs={9}>
             <Card sx={{padding: 2, alignItems: 'center'}}>
               <CartHeader itemsSize={items.length} selectedItemsSize={selectedItemsSize} cartId={data.id}/>

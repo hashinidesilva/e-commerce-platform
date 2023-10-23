@@ -21,7 +21,7 @@ export const ProductCard = ({product}) => {
         <Typography varient="h1">
           Rs. {product?.unitPrice}
         </Typography>
-        <Rating name="read-only" value={product?.averageRating ?? 0} readOnly size="small"/>
+        <Rating name="read-only" value={product?.averageRating ?? 0} readOnly size="small" precision={0.5}/>
       </CardContent>
     </Card>
   );

@@ -1,12 +1,14 @@
 import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Button, Card, CardContent, Divider, Stack, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Divider, Rating, Stack, Typography } from "@mui/material";
 import InventoryIcon from '@mui/icons-material/Inventory';
 import { CartNavigation } from "../order/CartNavigation.jsx";
 import { QuantityCounter } from "../common/QuantityCounter.jsx";
 import { useProduct } from "../../hooks/useProduct.jsx";
 import { useAddCartItem } from "../../hooks/useAddCartItem.jsx";
 import { CartContext } from "../../store/cart-context.jsx";
+import { useRatings } from "../../hooks/useRatings.jsx";
+import { RatingCard } from "../product/RatingCard.jsx";
 
 export const ProductInfoPage = () => {
   const {productId} = useParams();
@@ -14,13 +16,14 @@ export const ProductInfoPage = () => {
   const [quantity, setQuantity] = useState(1);
   const [addToCart, setAddToCart] = useState(false);
   const {data} = useProduct(productId);
+  const {data: ratings} = useRatings({productId: productId});
   const {mutate: cartFunc} = useAddCartItem({
     onSuccess: (item) => {
       cartCtx.addItem(item);
     }
   });
 
-  const {id, name, unitPrice} = data ?? {};
+  const {id, name, unitPrice, averageRating} = data ?? {};
   const cartItems = cartCtx.cart?.items ?? [];
 
   const onAddToCart = () => {
@@ -46,8 +49,8 @@ export const ProductInfoPage = () => {
   };
 
   return (
-    <Box sx={{marginTop: "50px", display: "flex", justifyContent: "center"}}>
-      <Card sx={{display: 'flex', padding: 2, width: '70%', alignItems: 'center'}}>
+    <Card sx={{padding: 2, width: '100%'}}>
+      <Stack direction={"row"}>
         <InventoryIcon sx={{fontSize: 200, marginBottom: 2}}/>
         {/*<CardMedia*/}
         {/*  component="img"*/}
@@ -57,12 +60,21 @@ export const ProductInfoPage = () => {
         {/*/>*/}
         <Box sx={{display: 'flex', flexDirection: 'column', width: '100%'}}>
           <CardContent sx={{flex: '1 0 auto'}}>
-            <Stack spacing={4}>
+            <Stack spacing={2}>
               <Typography component="div" variant="h5" gutterBottom>
                 {name?.length > 0 ? name : "Apple AirPods Pro (2nd Generation) Wireless Earbuds," +
                   " Up to 2X More Active Noise Cancelling, Adaptive Transparency, Personalized Spatial Audio, " +
                   "MagSafe Charging Case, Bluetooth Headphones for iPhone"}
               </Typography>
+              <Stack direction="row" spacing={1}>
+                <Rating name="read-only" value={averageRating ?? 0} readOnly size="small" precision={0.5}/>
+                <Typography
+                  variant="body"
+                  component="div"
+                >
+                  {ratings?.items?.length} ratings
+                </Typography>
+              </Stack>
               <Divider/>
               <Typography variant="h6" component="div">
                 {/*Rs. 88*/}
@@ -106,7 +118,9 @@ export const ProductInfoPage = () => {
               handleClose={() => setAddToCart(false)}/>
           )}
         </Box>
-      </Card>
-    </Box>
+      </Stack>
+      <Divider/>
+      <RatingCard ratings={ratings?.items} averageRating={averageRating}/>
+    </Card>
   );
 };

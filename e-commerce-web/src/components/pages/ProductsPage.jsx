@@ -1,5 +1,5 @@
 import { useParams, useSearchParams } from "react-router-dom";
-import { Grid, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { useProducts } from "../../hooks/useProducts.jsx";
 import { ProductCard } from "../product/ProductCard.jsx";
 import { NoProducts } from "../product/NoProducts.jsx";
@@ -18,7 +18,7 @@ export const ProductsPage = () => {
     <>
       {(products.length === 0 && !isLoading) && <NoProducts/>}
       {(products.length > 0 && !isLoading) &&
-        <>
+        <Box width={'100%'}>
           <Typography
             sx={{marginBottom: 3, fontWeight: 700, fontSize: 20}}>
             Results
@@ -30,7 +30,7 @@ export const ProductsPage = () => {
               </Grid>
             ))}
           </Grid>
-        </>
+        </Box>
       }
     </>
   );

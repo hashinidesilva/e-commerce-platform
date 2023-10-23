@@ -6,7 +6,7 @@ import { PaymentMethods } from "../user/PaymentMethods.jsx";
 export const CheckoutPage = () => {
   return (
     <Grid container spacing={2}
-          sx={{marginTop: "2rem", display: 'flex', justifyContent: "center", padding: '3rem'}}>
+          sx={{display: 'flex', justifyContent: "center"}}>
       <Grid item xs={8}>
         <Grid container spacing={2} direction={"column"}>
           <Grid item>
