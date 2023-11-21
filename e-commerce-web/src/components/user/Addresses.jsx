@@ -88,7 +88,6 @@ export const Addresses = ({isOpen, handleClose, onAddAddress, onEditAddress}) =>
               key={address?.id}
               address={address}
               isChecked={address?.id === addressCtx.selectedAddress?.id}
-              // selectedAddress={selectedAddress}
               onSetDefault={updateFunc}
               onEditAddress={onEditAddress}/>
           ))}

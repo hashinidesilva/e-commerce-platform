@@ -72,7 +72,7 @@ export const NavBar = () => {
           onClose={handleClose}
           MenuListProps={{onMouseLeave: handleClose}}
         >
-          <MenuItem onClick={handleMyAccount}>Manage my Account</MenuItem>
+          <MenuItem onClick={handleMyAccount}>My Account</MenuItem>
           <MenuItem onClick={handleOrders}>My Orders</MenuItem>
         </Menu>
         <LanguageIcon/>

@@ -6,7 +6,8 @@ import { ProductInfoPage } from "./components/pages/ProductInfoPage.jsx";
 import { CartPage } from "./components/pages/CartPage.jsx";
 import { CheckoutPage } from "./components/pages/CheckoutPage.jsx";
 import { OrdersPage } from "./components/pages/OrdersPage.jsx";
-import { MyAccount } from "./components/pages/MyAccount.jsx";
+import { MyAccountPage } from "./components/pages/MyAccountPage.jsx";
+import { AddressesPage } from "./components/pages/AddressesPage.jsx";
 
 function App() {
   return (
@@ -19,7 +20,8 @@ function App() {
           <Route path="/cart" element={<CartPage/>}/>
           <Route path="/checkout" element={<CheckoutPage/>}/>
           <Route path="/orders" element={<OrdersPage/>}/>
-          <Route path="/account" element={<MyAccount/>}/>
+          <Route path="/account" element={<MyAccountPage/>}/>
+          <Route path="/account/addresses" element={<AddressesPage/>}/>
           <Route path="/categories/:category" element={<ProductsPage/>}/>
           <Route path="/*" element={<Navigate to="/"/>}/>
         </Routes>

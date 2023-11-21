@@ -4,12 +4,14 @@ import PropTypes from "prop-types";
 export const AddressItem = ({address}) => {
   return (
     <div>
-      <Stack direction={"row"} spacing={2}>
-        <Typography variant="body1" fontWeight={600}>{address?.name}</Typography>
-        <Typography variant="subtitle2" fontWeight={400}>{address?.phoneNumber}</Typography>
+      <Stack spacing={1}>
+        <Stack direction={"row"} spacing={2} sx={{alignItems: 'center'}}>
+          <Typography variant="body1" fontWeight={600}>{address?.name}</Typography>
+          <Typography variant="subtitle2" fontWeight={400}>{address?.phoneNumber}</Typography>
+        </Stack>
+        <Typography variant="body2">{address?.address}</Typography>
       </Stack>
-      <Typography variant="body2">{address?.address}</Typography>
-      <Stack direction={"row"} spacing={0.5}>
+      <Stack direction={"row"} spacing={0.5} sx={{alignItems: 'center'}}>
         <Typography variant="body2">{address?.province},</Typography>
         <Typography variant="body2">{address?.city},</Typography>
         <Typography variant="body2">{address?.postalCode}</Typography>
