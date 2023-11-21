@@ -14,16 +14,26 @@ object CartItemRoute extends JsonConverter {
   def route(cartHandler: CartHandler): Route = pathPrefix("carts" / IntNumber / "items") { cartId =>
     concat(
       pathEnd {
-        post {
-          entity(as[CartItemDTO]) { item =>
-            onComplete(cartHandler.addOrUpdateCartItem(item, cartId)) {
-              case Success(cartResponse) =>
-                complete(cartResponse)
+        concat(
+          post {
+            entity(as[CartItemDTO]) { item =>
+              onComplete(cartHandler.addOrUpdateCartItem(item, cartId)) {
+                case Success(cartResponse) =>
+                  complete(cartResponse)
+                case Failure(ex) =>
+                  complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
+              }
+            }
+          },
+          delete {
+            onComplete(cartHandler.deleteItems(cartId)) {
+              case Success(_) =>
+                complete(OK)
               case Failure(ex) =>
                 complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
             }
           }
-        }
+        )
       },
       path(IntNumber) { itemId =>
         concat(

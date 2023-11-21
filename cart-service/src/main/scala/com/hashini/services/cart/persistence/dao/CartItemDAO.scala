@@ -18,6 +18,8 @@ trait CartItemDAO {
 
   def delete(id: Int): Future[Int]
 
+  def deleteByCartId(cartId: Int): Future[Int]
+
   def updateSelected(cartId: Int,
                      selected: Boolean): Future[Int]
 

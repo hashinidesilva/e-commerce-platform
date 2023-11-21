@@ -42,6 +42,10 @@ class CartHandler(cartDAO: CartDAO,
     cartItemDAO.delete(id)
   }
 
+  def deleteItems(cartId: Int): Future[Int] = {
+    cartItemDAO.deleteByCartId(cartId)
+  }
+
   def updateItem(id: Int,
                  item: CartItemDTO): Future[CartItem] = {
     cartItemDAO.insertOrUpdate(item.getCartItem.copy(id = id))

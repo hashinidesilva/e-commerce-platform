@@ -28,6 +28,10 @@ class DefaultCartItemDAO extends CartItemDAO {
     db.run(cartItemQuery.filter(_.id === id).delete)
   }
 
+  override def deleteByCartId(cartId: Int): Future[Int] = {
+    db.run(cartItemQuery.filter(_.cartId === cartId).delete)
+  }
+
   override def loadByProductId(cartId: Int,
                                productId: Int): DBIOAction[Option[CartItem], NoStream, Effect.Read] = {
     cartItemQuery.filter(item => item.cartId === cartId && item.productId === productId).result.headOption
