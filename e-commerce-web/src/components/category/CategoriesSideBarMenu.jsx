@@ -10,7 +10,7 @@ export const CategoriesSideBarMenu = ({isOpen, handleClose}) => {
 
   const menuItemClickHandler = (categoryName) => {
     handleClose(true);
-    navigate(`${categoryName.toLowerCase()}`);
+    navigate(`/categories/${categoryName.toLowerCase()}`);
   };
 
   return (

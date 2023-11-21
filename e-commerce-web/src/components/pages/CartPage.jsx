@@ -52,6 +52,7 @@ const CartItem = ({item}) => {
   };
 
   const onUpdateSelected = (checked) => {
+    cartCtx.changeSelected(item.id, checked);
     updateFunc({
       id: item.id,
       selected: checked,
@@ -122,7 +123,7 @@ export const CartPage = () => {
             </Card>
           </Grid>
           <Grid item xs={3}>
-            <OrderSummary subTotal={subTotal}/>
+            <OrderSummary selectedItems={selectedItems}/>
           </Grid>
         </Grid>
       }

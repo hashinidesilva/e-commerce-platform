@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Card, Stack, Typography } from "@mui/material";
 import PropTypes from "prop-types";
+import { useAddOrder } from "../../hooks/useAddOrder.jsx";
 
 const SummaryLine = ({title, value}) => {
   return (
@@ -14,10 +15,26 @@ const SummaryLine = ({title, value}) => {
     </Stack>
   );
 };
-export const OrderSummary = ({subTotal, isInCheckout = false}) => {
+export const OrderSummary = ({isInCheckout = false, selectedItems = []}) => {
   const navigate = useNavigate();
+  const {mutate: orderFunc} = useAddOrder();
+  const subTotal = selectedItems.reduce((acc, item) => acc + (item.quantity * item.product?.unitPrice), 0);
   const shippingFee = subTotal > 0 ? 100 : 0;
   const total = subTotal + shippingFee;
+  console.log("SELECTED", selectedItems);
+  const onPlaceOrder = () => {
+    orderFunc({
+      userId: 1,
+      totalAmount: total,
+      items: selectedItems.map(item => {
+        return {
+          productId: item.product.id,
+          quantity: item.quantity
+        };
+      })
+    });
+    navigate("/");
+  };
   return (
     <Card sx={{padding: 3}}>
       <Typography variant="h5" fontWeight={600}>Summary</Typography>
@@ -28,7 +45,7 @@ export const OrderSummary = ({subTotal, isInCheckout = false}) => {
       </Box>
       {isInCheckout && (
         <Button fullWidth variant="contained" sx={{backgroundColor: "#ffb300", color: "black"}}
-                onClick={() => navigate("/")}>
+                onClick={onPlaceOrder}>
           Place Order
         </Button>
       )}
@@ -48,6 +65,6 @@ SummaryLine.propTypes = {
 };
 
 OrderSummary.propTypes = {
-  subTotal: PropTypes.number,
+  selectedItems: PropTypes.array,
   isInCheckout: PropTypes.bool
 };

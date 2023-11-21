@@ -34,6 +34,16 @@ export const CartProvider = (props) => {
     }
   };
 
+  const changeSelected = (id, selected) => {
+    const items = cart?.items;
+    const index = items.findIndex(item => item.id === id);
+    if (index > -1) {
+      const existingItems = [...items];
+      existingItems[index].selected = selected;
+      setCart(prev => ({...prev, items: existingItems}));
+    }
+  };
+
   const removeItem = (id) => {
     const items = cart?.items;
     const index = items.findIndex(item => item.id === id);
@@ -48,6 +58,7 @@ export const CartProvider = (props) => {
     addItem: addItem,
     removeItem: removeItem,
     changeQuantity: changeQuantity,
+    changeSelected: changeSelected
   };
 
   return (

@@ -10,7 +10,7 @@ export const CategoryCard = ({title, imagePath}) => {
         sx={{fontSize: 20, fontWeight: 700}}>
         {title}
       </Typography>
-      <Link href={`${title.toLowerCase()}`}
+      <Link href={`/categories/${title.toLowerCase()}`}
             underline="none"
             sx={{color: '#26a69a', '&:hover': {color: '#ffab40'}}}>
         <CardMedia

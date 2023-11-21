@@ -1,9 +1,14 @@
+import { useContext } from "react";
 import { Grid } from "@mui/material";
 import { OrderSummary } from "../order/OrderSummary.jsx";
 import { AddressCard } from "../user/AddressCard.jsx";
 import { PaymentMethods } from "../user/PaymentMethods.jsx";
+import { CartContext } from "../../store/cart-context.jsx";
 
 export const CheckoutPage = () => {
+  const cartCtx = useContext(CartContext);
+  const selectedItems = cartCtx.cart?.items?.filter(item => item.selected);
+
   return (
     <Grid container spacing={2}
           sx={{display: 'flex', justifyContent: "center"}}>
@@ -18,7 +23,7 @@ export const CheckoutPage = () => {
         </Grid>
       </Grid>
       <Grid item xs={3}>
-        <OrderSummary isInCheckout={true}/>
+        <OrderSummary isInCheckout={true} selectedItems={selectedItems}/>
       </Grid>
     </Grid>
   );

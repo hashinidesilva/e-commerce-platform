@@ -1,7 +1,7 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Badge, IconButton, Stack, Toolbar, Typography } from "@mui/material";
+import { Badge, IconButton, Menu, MenuItem, Stack, Toolbar, Typography } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
 import LanguageIcon from '@mui/icons-material/Language';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -10,9 +10,23 @@ import { CartContext } from "../../store/cart-context.jsx";
 
 export const NavBar = () => {
   const navigate = useNavigate();
+  const [anchorEl, setAnchorEl] = useState(null);
   const cartCtx = useContext(CartContext);
   const items = cartCtx.cart?.items ?? [];
   const cartSize = items.reduce((acc, item) => acc + item?.quantity, 0);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleOrders = () => {
+    navigate("/orders")
+  }
 
   useEffect(() => {
     axios.get("http://localhost:9003/carts").then((response) => {
@@ -39,7 +53,21 @@ export const NavBar = () => {
       </Typography>
       <SearchProducts/>
       <Stack direction="row" spacing={4} sx={{marginLeft: 4, justifyContent: 'flex-end', alignItems: 'center'}}>
-        <PersonIcon/>
+        <IconButton
+          size="small"
+          color="inherit"
+          onClick={handleClick}
+        >
+          <PersonIcon/>
+        </IconButton>
+        <Menu
+          id="user"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+        >
+          <MenuItem onClick={handleOrders}>My Orders</MenuItem>
+        </Menu>
         <LanguageIcon/>
         <Badge badgeContent={cartSize} color="warning">
           <IconButton
