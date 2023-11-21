@@ -7,7 +7,7 @@ import java.sql.Timestamp
 
 case class Order(userId: Int,
                  totalAmount: Double,
-                 status: String = "",
+                 status: String = "Order Confirmed",
                  orderDate: Timestamp = new Timestamp(System.currentTimeMillis()),
                  id: Int = 0) {
 
