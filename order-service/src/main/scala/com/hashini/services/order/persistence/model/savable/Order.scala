@@ -11,12 +11,13 @@ case class Order(userId: Int,
                  orderDate: Timestamp = new Timestamp(System.currentTimeMillis()),
                  id: Int = 0) {
 
-  def getOrderResponseDTO: OrderResponseDTO = {
+  def getOrderResponseDTO(items: Seq[OrderItem] = Seq()): OrderResponseDTO = {
     OrderResponseDTO(id,
       userId,
       totalAmount,
       status,
-      TimestampConverter.convertToString(orderDate))
+      TimestampConverter.convertToString(orderDate),
+      items.map(_.getOrderItemResponseDTO))
   }
 
 }

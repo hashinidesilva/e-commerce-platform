@@ -4,4 +4,5 @@ case class OrderResponseDTO(id: Int,
                             userId: Int,
                             totalAmount: Double,
                             status: String,
-                            orderDate: String)
+                            orderDate: String,
+                            items: Seq[OrderItemResponseDTO] = Seq())
