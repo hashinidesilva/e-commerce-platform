@@ -3,16 +3,17 @@ package com.hashini.services.user.api
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.server.Route
-import com.hashini.services.user.api.routes.UserAddressRoutes
-import com.hashini.services.user.handler.AddressHandler
+import akka.http.scaladsl.server.{Directives, Route}
+import com.hashini.services.user.api.routes.{UserAddressRoutes, UserRoutes}
+import com.hashini.services.user.handler.{AddressHandler, UserHandler}
 import com.hashini.services.user.util.DefaultConfiguration
 import com.typesafe.scalalogging.LazyLogging
 
 import scala.concurrent.ExecutionContext
 import scala.util.{Failure, Success}
 
-class RestServer(addressHandler: AddressHandler) extends CORSHandler with LazyLogging {
+class RestServer(userHandler: UserHandler,
+                 addressHandler: AddressHandler) extends CORSHandler with LazyLogging {
 
   implicit val system: ActorSystem[_] = ActorSystem(Behaviors.empty, "user")
   implicit val executionContext: ExecutionContext = system.executionContext
@@ -33,7 +34,10 @@ class RestServer(addressHandler: AddressHandler) extends CORSHandler with LazyLo
 
   private def createRoute(): Route = {
     corsHandler {
-      UserAddressRoutes.route(addressHandler)
+      Directives.concat(
+        UserRoutes.route(userHandler),
+        UserAddressRoutes.route(addressHandler)
+      )
     }
   }
 

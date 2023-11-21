@@ -22,7 +22,7 @@ trait UserComponent {
 
     def phoneNumber: Rep[Int] = column[Int]("phone_number")
 
-    def createdTime: Rep[Timestamp] = column[Timestamp]("timestamp")
+    def createdTime: Rep[Timestamp] = column[Timestamp]("created_time")
 
     override def * : ProvenShape[User] = (email,
       password,
