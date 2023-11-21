@@ -17,4 +17,6 @@ trait ProductDAO {
   def updateAverageRating(id: Int,
                           rating: Double): Future[Int]
 
+  def updateQuantity(id: Int,
+                     reducedQuantity: Int): Future[Unit]
 }

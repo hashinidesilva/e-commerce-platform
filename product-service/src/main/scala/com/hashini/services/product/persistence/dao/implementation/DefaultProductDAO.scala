@@ -41,4 +41,24 @@ class DefaultProductDAO extends ProductDAO {
                                    rating: Double): Future[Int] = {
     db.run(productQuery.filter(_.id === id).map(_.averageRating).update(rating))
   }
+
+  override def updateQuantity(id: Int,
+                              reducedQuantity: Int): Future[Unit] = {
+    val query = for {
+      productOption <- productQuery.filter(_.id === id).result.headOption
+      _ <- productOption match {
+        case Some(product) =>
+          val remainingQuantity = product.quantity - reducedQuantity
+          if (remainingQuantity >= 0) {
+            productQuery.filter(_.id === id).map(_.quantity).update(remainingQuantity)
+          } else {
+            productQuery.filter(_.id === id).map(_.quantity).update(0)
+          }
+        case None =>
+          DBIO.successful()
+      }
+    } yield ()
+
+    db.run(query.transactionally)
+  }
 }

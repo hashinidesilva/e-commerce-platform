@@ -2,6 +2,7 @@ package com.hashini.services.product.handler
 
 import com.hashini.services.product.dto.{ProductDTO, ProductRatingDTO, ProductResponseDTO, ProductsDTO}
 import com.hashini.services.product.persistence.dao.ProductDAO
+import com.hashini.services.product.rabbitmq.dto.ProductQuantityDTO
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.Try
@@ -28,6 +29,11 @@ class ProductHandler(productDAO: ProductDAO)(implicit executionContext: Executio
 
   def updateRating(productRatingDTO: ProductRatingDTO): Future[Int] = {
     productDAO.updateAverageRating(productRatingDTO.productId, f"${productRatingDTO.averageRating}%.2f".toDouble)
+  }
+
+  def updateQuantity(updatedQuantities: Seq[ProductQuantityDTO]): Future[Seq[Unit]] = {
+    Future.sequence(updatedQuantities.map(updatedProduct =>
+      productDAO.updateQuantity(updatedProduct.productId, updatedProduct.quantity)))
   }
 
 }
