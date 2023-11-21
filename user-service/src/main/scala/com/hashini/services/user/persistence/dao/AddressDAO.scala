@@ -18,4 +18,6 @@ trait AddressDAO {
   def markAsNonDefault(userId: Int,
                        defaultAddressId: Int): DBIOAction[Int, NoStream, Effect.Write]
 
+  def delete(id: Int): Future[Int]
+
 }

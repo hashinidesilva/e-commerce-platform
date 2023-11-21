@@ -36,6 +36,10 @@ class AddressHandler(addressDAO: AddressDAO)(implicit executionContext: Executio
     }
   }
 
+  def deleteAddress(id: Int): Future[Int] = {
+    addressDAO.delete(id)
+  }
+
   private def insertOrUpdateAndMarkOthersAsNonDefault(address: Address): Future[AddressResponseDTO] = {
     val query = for {
       newAddress <- addressDAO.insertOrUpdateIO(address)

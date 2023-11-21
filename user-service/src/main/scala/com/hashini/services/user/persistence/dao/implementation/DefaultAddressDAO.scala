@@ -30,4 +30,8 @@ class DefaultAddressDAO extends AddressDAO {
                                 defaultAddressId: Int): DBIOAction[Int, NoStream, Effect.Write] = {
     addressQuery.filter(_.userId === userId).filterNot(_.id === defaultAddressId).map(_.isDefault).update(false)
   }
+
+  override def delete(id: Int): Future[Int] = {
+    db.run(addressQuery.filter(_.id === id).delete)
+  }
 }

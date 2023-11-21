@@ -1,6 +1,6 @@
 package com.hashini.services.user.api.routes
 
-import akka.http.scaladsl.model.StatusCodes.InternalServerError
+import akka.http.scaladsl.model.StatusCodes.{InternalServerError, OK}
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import com.hashini.services.user.api.conveter.JsonConverter
@@ -36,16 +36,26 @@ object UserAddressRoutes extends JsonConverter {
         )
       },
       path(IntNumber) { addressId =>
-        put {
-          entity(as[AddressDTO]) { updatedAddress =>
-            onComplete(addressHandler.updateAddress(updatedAddress, userId, addressId)) {
-              case Success(address) =>
-                complete(address)
+        concat(
+          put {
+            entity(as[AddressDTO]) { updatedAddress =>
+              onComplete(addressHandler.updateAddress(updatedAddress, userId, addressId)) {
+                case Success(address) =>
+                  complete(address)
+                case Failure(ex) =>
+                  complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
+              }
+            }
+          },
+          delete {
+            onComplete(addressHandler.deleteAddress(addressId)) {
+              case Success(_) =>
+                complete(OK)
               case Failure(ex) =>
                 complete(InternalServerError, s"An error occurred: ${ex.getMessage}")
             }
           }
-        }
+        )
       }
     )
   }

@@ -2,8 +2,8 @@ package com.hashini.services.user.persistence.dao.implementation
 
 import com.hashini.services.user.persistence.DatabaseConnector.db
 import com.hashini.services.user.persistence.dao.UserDAO
-import com.hashini.services.user.persistence.model.DAL.{addressQuery, profile, userQuery}
-import com.hashini.services.user.persistence.model.savable.{Address, User}
+import com.hashini.services.user.persistence.model.DAL.{profile, userQuery}
+import com.hashini.services.user.persistence.model.savable.User
 
 import scala.concurrent.{ExecutionContext, Future}
 import scala.util.{Failure, Success, Try}
@@ -12,12 +12,15 @@ class DefaultUserDAO(implicit executionContext: ExecutionContext) extends UserDA
 
   import profile.api._
 
-  override def load(id: Int): Future[Try[(User, Seq[Address])]] = {
+  override def insertOrUpdate(user: User): Future[User] = {
     val query = for {
-      queryResult <- (userQuery.filter(_.id === id) joinLeft addressQuery on (_.id === _.userId)).result
-    } yield queryResult.groupBy(_._1).map {
-      case (user, info) => (user, info.flatMap(_._2).distinct)
-    }
+      userOption <- (userQuery returning userQuery).insertOrUpdate(user)
+    } yield userOption.getOrElse(user)
+    db.run(query)
+  }
+
+  override def load(id: Int): Future[Try[User]] = {
+    val query = userQuery.filter(_.id === id).result
 
     for {
       results <- db.run(query)
