@@ -23,7 +23,7 @@ export const CheckoutPage = () => {
         </Grid>
       </Grid>
       <Grid item xs={3}>
-        <OrderSummary isInCheckout={true} selectedItems={selectedItems}/>
+        <OrderSummary isInCheckout={true} selectedItems={selectedItems} cartId={cartCtx.cart?.id}/>
       </Grid>
     </Grid>
   );

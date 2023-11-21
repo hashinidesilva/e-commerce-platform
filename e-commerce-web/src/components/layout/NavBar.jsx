@@ -25,8 +25,12 @@ export const NavBar = () => {
   };
 
   const handleOrders = () => {
-    navigate("/orders")
-  }
+    navigate("/orders");
+  };
+
+  const handleMyAccount = () => {
+    navigate("/account");
+  };
 
   useEffect(() => {
     axios.get("http://localhost:9003/carts").then((response) => {
@@ -57,6 +61,7 @@ export const NavBar = () => {
           size="small"
           color="inherit"
           onClick={handleClick}
+          onMouseOver={handleClick}
         >
           <PersonIcon/>
         </IconButton>
@@ -65,7 +70,9 @@ export const NavBar = () => {
           anchorEl={anchorEl}
           open={open}
           onClose={handleClose}
+          MenuListProps={{onMouseLeave: handleClose}}
         >
+          <MenuItem onClick={handleMyAccount}>Manage my Account</MenuItem>
           <MenuItem onClick={handleOrders}>My Orders</MenuItem>
         </Menu>
         <LanguageIcon/>

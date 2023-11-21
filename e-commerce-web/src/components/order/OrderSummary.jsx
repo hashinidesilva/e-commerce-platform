@@ -1,7 +1,10 @@
+import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Box, Button, Card, Stack, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import { useAddOrder } from "../../hooks/useAddOrder.jsx";
+import { useDeleteCartItems } from "../../hooks/useDeleteCartItems.jsx";
+import { CartContext } from "../../store/cart-context.jsx";
 
 const SummaryLine = ({title, value}) => {
   return (
@@ -15,13 +18,20 @@ const SummaryLine = ({title, value}) => {
     </Stack>
   );
 };
-export const OrderSummary = ({isInCheckout = false, selectedItems = []}) => {
+export const OrderSummary = ({isInCheckout = false, selectedItems = [], cartId = 0}) => {
+  const cartCtx = useContext(CartContext);
   const navigate = useNavigate();
-  const {mutate: orderFunc} = useAddOrder();
+  const {mutate: deleteItemsFunc} = useDeleteCartItems();
+  const {mutate: orderFunc} = useAddOrder({
+    onSuccess: () => {
+      deleteItemsFunc([cartId]);
+      cartCtx.removeCart();
+    }
+  });
   const subTotal = selectedItems.reduce((acc, item) => acc + (item.quantity * item.product?.unitPrice), 0);
   const shippingFee = subTotal > 0 ? 100 : 0;
   const total = subTotal + shippingFee;
-  console.log("SELECTED", selectedItems);
+
   const onPlaceOrder = () => {
     orderFunc({
       userId: 1,
@@ -66,5 +76,6 @@ SummaryLine.propTypes = {
 
 OrderSummary.propTypes = {
   selectedItems: PropTypes.array,
-  isInCheckout: PropTypes.bool
+  isInCheckout: PropTypes.bool,
+  cartId: PropTypes.number
 };

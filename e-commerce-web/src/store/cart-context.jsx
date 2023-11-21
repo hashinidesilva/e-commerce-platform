@@ -11,5 +11,7 @@ export const CartContext = createContext({
   changeQuantity: (id, quantity) => {
   },
   changeSelected: (id, selected) => {
+  },
+  removeCart: () => {
   }
 });

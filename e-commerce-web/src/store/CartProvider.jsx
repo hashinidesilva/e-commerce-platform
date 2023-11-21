@@ -19,7 +19,7 @@ export const CartProvider = (props) => {
     } else {
       setCart(prev => ({
         ...prev,
-        items: [{id: newItem.id, productId: newItem.product.id, quantity: newItem.quantity}, ...prev.items]
+        items: [newItem, ...prev.items]
       }));
     }
   };
@@ -52,13 +52,18 @@ export const CartProvider = (props) => {
     setCart(prev => ({...prev, items: existingItems}));
   };
 
+  const removeCart = () => {
+    setCart({});
+  };
+
   const cartContext = {
     cart: cart,
     updateCart: updateCart,
     addItem: addItem,
     removeItem: removeItem,
     changeQuantity: changeQuantity,
-    changeSelected: changeSelected
+    changeSelected: changeSelected,
+    removeCart: removeCart
   };
 
   return (
