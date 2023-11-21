@@ -43,13 +43,21 @@ export const AddressProvider = (props) => {
     setAddresses(addresses);
   };
 
+  const deleteAddress = (id) => {
+    const index = addresses.findIndex(item => item.id === id);
+    const existingAddresses = [...addresses];
+    existingAddresses.splice(index, 1);
+    setAddresses(existingAddresses);
+  };
+
   const addressContext = {
     selectedAddress: selectedAddress,
     addresses: addresses,
     addAddress: addAddress,
     updateAddress: updateAddress,
     changeSelectedAddress: changeAddress,
-    changeAddressList: changeAddressList
+    changeAddressList: changeAddressList,
+    deleteAddress: deleteAddress
   };
 
   return (

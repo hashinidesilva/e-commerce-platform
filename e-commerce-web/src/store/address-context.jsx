@@ -10,5 +10,7 @@ export const AddressContext = createContext({
   changeSelectedAddress: (address) => {
   },
   changeAddressList: (addresses) => {
+  },
+  deleteAddress: (id) => {
   }
 });

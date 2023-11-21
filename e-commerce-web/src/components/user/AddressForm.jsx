@@ -15,10 +15,12 @@ import {
   Typography
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
+import DeleteIcon from "@mui/icons-material/Delete";
 import PropTypes from "prop-types";
 import { useAddAddress } from "../../hooks/useAddAddress.jsx";
 import { AddressContext } from "../../store/address-context.jsx";
 import { useUpdateAddress } from "../../hooks/useUpdateAddress.jsx";
+import { useDeleteAddress } from "../../hooks/useDeleteAddress.jsx";
 
 const PROVINCES = [
   {label: "Central", value: "Central"},
@@ -52,6 +54,12 @@ export const AddressForm = ({isOpen, handleClose, address = undefined}) => {
   const {mutate: updateFunc} = useUpdateAddress({
     onSuccess: (updatedAddress) => {
       addressCtx.updateAddress(updatedAddress);
+      handleClose();
+    }
+  });
+  const {mutate: deleteFunc} = useDeleteAddress({
+    onSuccess: () => {
+      addressCtx.deleteAddress(address?.id);
       handleClose();
     }
   });
@@ -91,6 +99,10 @@ export const AddressForm = ({isOpen, handleClose, address = undefined}) => {
 
   const onPostalCodeChange = (event) => {
     setPostalCode(event.target.value);
+  };
+
+  const onDelete = () => {
+    deleteFunc([address?.id]);
   };
 
   const onSubmit = () => {
@@ -183,13 +195,21 @@ export const AddressForm = ({isOpen, handleClose, address = undefined}) => {
           </Typography>
         </Stack>
       </DialogContent>
-      <DialogActions>
-        <Button sx={{backgroundColor: "#ffb300", color: "black"}} onClick={onSubmit}>
-          Confirm
-        </Button>
-        <Button variant={'outlined'} sx={{borderColor: "#ffb300", color: "black"}} onClick={handleClose}>
-          Cancel
-        </Button>
+      <DialogActions
+        sx={{justifyContent: `${(address && !address.isDefault) ? "space-between" : "flex-end"}`, marginX: '1rem'}}>
+        {(address && !address.isDefault) && (
+          <Button variant="outlined" color="error" startIcon={<DeleteIcon/>} onClick={onDelete}>
+            Delete Address
+          </Button>
+        )}
+        <Stack direction={"row"} spacing={2}>
+          <Button sx={{backgroundColor: "#ffb300", color: "black"}} onClick={onSubmit}>
+            Confirm
+          </Button>
+          <Button variant={'outlined'} sx={{borderColor: "#ffb300", color: "black"}} onClick={handleClose}>
+            Cancel
+          </Button>
+        </Stack>
       </DialogActions>
     </Dialog>
   );

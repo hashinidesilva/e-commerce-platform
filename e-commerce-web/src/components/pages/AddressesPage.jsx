@@ -58,8 +58,8 @@ export const AddressesPage = () => {
           Add new address
         </Button>
       </Stack>
-      <Grid container spacing={2}
-            sx={{display: 'flex', justifyContent: "space-between", marginTop: '0.1rem'}}>
+      <Grid container spacing={3}
+            sx={{display: 'flex', marginTop: '0.1rem', flexWrap: 'wrap'}}>
         {addresses.map(address => (
           <Grid item key={address.id}>
             <AddressCard address={address}/>

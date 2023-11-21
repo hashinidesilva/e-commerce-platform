@@ -39,7 +39,9 @@ export const OrderSummary = ({isInCheckout = false, selectedItems = [], cartId =
       items: selectedItems.map(item => {
         return {
           productId: item.product.id,
-          quantity: item.quantity
+          quantity: item.quantity,
+          unitPrice: item.product.unitPrice,
+          subTotal: item.quantity * item.product.unitPrice
         };
       })
     });
