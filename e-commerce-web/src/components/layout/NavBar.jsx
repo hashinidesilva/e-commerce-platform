@@ -1,9 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Badge, IconButton, Menu, MenuItem, Stack, Toolbar, Typography } from "@mui/material";
+import { Badge, ClickAwayListener, IconButton, Menu, MenuItem, Stack, Toolbar, Typography } from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
-import LanguageIcon from '@mui/icons-material/Language';
+// import LanguageIcon from '@mui/icons-material/Language';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { SearchProducts } from "../product/SearchProducts.jsx";
 import { CartContext } from "../../store/cart-context.jsx";
@@ -25,10 +25,12 @@ export const NavBar = () => {
   };
 
   const handleOrders = () => {
+    handleClose();
     navigate("/orders");
   };
 
   const handleMyAccount = () => {
+    handleClose();
     navigate("/account");
   };
 
@@ -63,20 +65,22 @@ export const NavBar = () => {
           onClick={handleClick}
           onMouseOver={handleClick}
         >
-          <PersonIcon/>
+          <PersonIcon sx={{'&:hover': {backgroundColor: '#00695c'}}}/>
         </IconButton>
-        <Menu
-          id="user"
-          anchorEl={anchorEl}
-          open={open}
-          onClose={handleClose}
-          MenuListProps={{onMouseLeave: handleClose}}
-        >
-          <MenuItem onClick={handleMyAccount}>My Account</MenuItem>
-          <MenuItem onClick={handleOrders}>My Orders</MenuItem>
-        </Menu>
-        <LanguageIcon/>
-        <Badge badgeContent={cartSize} color="warning">
+        <ClickAwayListener onClickAway={handleClose}>
+          <Menu
+            id="user"
+            anchorEl={anchorEl}
+            open={open}
+            onClose={handleClose}
+            MenuListProps={{onMouseLeave: handleClose}}
+          >
+            <MenuItem onClick={handleMyAccount}>My Account</MenuItem>
+            <MenuItem onClick={handleOrders}>My Orders</MenuItem>
+          </Menu>
+        </ClickAwayListener>
+        {/*<LanguageIcon/>*/}
+        <Badge badgeContent={cartSize} color="warning" sx={{'&:hover': {backgroundColor: '#00695c'}}}>
           <IconButton
             size="small"
             color="inherit"

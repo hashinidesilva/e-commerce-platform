@@ -47,7 +47,8 @@ export const RatingCard = ({ratings = [], averageRating}) => {
       <Box width={"40%"}>
         {stars.map(star => {
           const count = ratings.filter(item => item?.rating === star).length;
-          return <RatingLine key={star} star={star} count={count} percentage={count / (ratings.length) * 100}/>;
+          return <RatingLine key={star} star={star} count={count}
+                             percentage={ratings.length > 0 ? (count / (ratings.length) * 100) : 0}/>;
         })}
       </Box>
     </Stack>

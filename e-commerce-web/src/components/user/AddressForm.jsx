@@ -21,6 +21,7 @@ import { useAddAddress } from "../../hooks/useAddAddress.jsx";
 import { AddressContext } from "../../store/address-context.jsx";
 import { useUpdateAddress } from "../../hooks/useUpdateAddress.jsx";
 import { useDeleteAddress } from "../../hooks/useDeleteAddress.jsx";
+import { Discard } from "../common/Discard.jsx";
 
 const PROVINCES = [
   {label: "Central", value: "Central"},
@@ -44,6 +45,7 @@ export const AddressForm = ({isOpen, handleClose, address = undefined}) => {
   const [city, setCity] = useState("");
   const [postalCode, setPostalCode] = useState("");
   const [isDefault, setIsDefault] = useState(false);
+  const [isDiscardOpen, setIsDiscardOpen] = useState(false);
 
   const {mutate: addFunc} = useAddAddress({
     onSuccess: (newAddress) => {
@@ -206,11 +208,20 @@ export const AddressForm = ({isOpen, handleClose, address = undefined}) => {
           <Button sx={{backgroundColor: "#ffb300", color: "black"}} onClick={onSubmit}>
             Confirm
           </Button>
-          <Button variant={'outlined'} sx={{borderColor: "#ffb300", color: "black"}} onClick={handleClose}>
+          <Button variant={'outlined'} sx={{borderColor: "#ffb300", color: "black"}}
+                  onClick={() => setIsDiscardOpen(true)}>
             Cancel
           </Button>
         </Stack>
       </DialogActions>
+      {isDiscardOpen && (
+        <Discard title={"Discard your address card?"}
+                 body={"You haven’t finished your address card yet. Are you sure you want to leave and discard your inputs?"}
+                 handleClose={handleClose}
+                 keep={() => setIsDiscardOpen(false)}
+                 isOpen={isDiscardOpen}
+        />
+      )}
     </Dialog>
   );
 };

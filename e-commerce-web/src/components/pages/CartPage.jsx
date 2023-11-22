@@ -11,6 +11,7 @@ import { useUpdateCartItem } from "../../hooks/useUpdateCartItem.jsx";
 import { EmptyCart } from "../order/EmptyCart.jsx";
 import { useUpdateCart } from "../../hooks/useUpdateCart.jsx";
 import { CartContext } from "../../store/cart-context.jsx";
+import { Loading } from "../common/Loading.jsx";
 
 const CartHeader = ({itemsSize = 0, selectedItemsSize = 0, cartId}) => {
   const {mutate: updateFunc} = useUpdateCart();
@@ -96,9 +97,11 @@ export const CartPage = () => {
   const selectedItems = items.filter(item => item.selected);
   const selectedItemsSize = selectedItems.length;
   const subTotal = selectedItems.reduce((acc, item) => acc + (item.quantity * item.product?.unitPrice), 0);
+  const itemsCount = selectedItems.map(item => item.quantity).reduce((acc, quantity) => acc + quantity, 0);
 
   return (
     <>
+      {isLoading && <Loading/>}
       {(items.length === 0 && !isLoading) && <EmptyCart/>}
       {(items.length > 0 && !isLoading) &&
         <Grid container spacing={2}
@@ -117,7 +120,7 @@ export const CartPage = () => {
               </Stack>
               <CardContent style={{textAlign: 'right'}}>
                 <Typography component="div" variant="body1" fontWeight="bold">
-                  {`Subtotal (${selectedItemsSize} ${selectedItemsSize > 1 ? "items" : "item"}): Rs.${subTotal}`}
+                  {`Subtotal (${itemsCount} ${itemsCount > 1 ? "items" : "item"}): Rs.${subTotal}`}
                 </Typography>
               </CardContent>
             </Card>

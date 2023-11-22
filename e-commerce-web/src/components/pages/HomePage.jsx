@@ -3,7 +3,7 @@ import { CategoryCard } from "../category/CategoryCard.jsx";
 
 export const HomePage = () => {
   return (
-    <Grid container spacing={9} sx={{flexWrap: 'wrap', display: 'flex'}}>
+    <Grid container spacing={9} sx={{flexWrap: 'wrap', display: 'flex', marginBottom: '3rem'}}>
       <Grid item>
         <CategoryCard title={"Electronics"} imagePath={"/assets/electronics.jpeg"}/>
       </Grid>

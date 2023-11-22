@@ -14,7 +14,7 @@ import { AddressItem } from "../user/AddressItem.jsx";
 const UserInfo = ({user}) => {
   const [editUserInfo, setEditUserInfo] = useState(false);
   return (
-    <Card>
+    <Card sx={{minHeight: 180}}>
       <CardContent>
         <Stack direction={"row"} sx={{display: 'flex', justifyContent: "space-between", alignItems: "flex-start"}}>
           <Typography sx={{mb: '1rem', fontSize: 18}} fontWeight="bold">
@@ -56,7 +56,7 @@ const AddressBook = () => {
   const defaultAddress = addressCtx.addresses?.find(address => address.isDefault);
 
   return (
-    <Card>
+    <Card sx={{minHeight: 180}}>
       <CardContent>
         <Stack direction={"row"} sx={{display: 'flex', justifyContent: "space-between", alignItems: "flex-start"}}>
           <Typography sx={{mb: '1rem', fontSize: 18}} fontWeight="bold">
@@ -106,11 +106,11 @@ export const MyAccountPage = () => {
         sx={{marginBottom: 3, fontWeight: 700, fontSize: 20}}>
         Manage My Account
       </Typography>
-      <Grid container spacing={2} sx={{justifyContent: 'space-between', display: 'flex'}}>
-        <Grid item xs={4} sx={{height: '100%'}}>
+      <Grid container spacing={2} sx={{justifyContent: 'space-between', display: 'flex', marginBottom: '2rem'}}>
+        <Grid item xs={4}>
           <UserInfo user={user}/>
         </Grid>
-        <Grid item xs={7} style={{height: '250px'}}>
+        <Grid item xs={7}>
           <AddressBook/>
         </Grid>
       </Grid>

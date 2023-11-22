@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Box, Button, Card, CardContent, Divider, Rating, Stack, Typography } from "@mui/material";
+import { Alert, Box, Button, Card, CardContent, Divider, Rating, Snackbar, Stack, Typography } from "@mui/material";
 import InventoryIcon from '@mui/icons-material/Inventory';
 import { CartNavigation } from "../order/CartNavigation.jsx";
 import { QuantityCounter } from "../common/QuantityCounter.jsx";
@@ -15,11 +15,18 @@ export const ProductInfoPage = () => {
   const cartCtx = useContext(CartContext);
   const [quantity, setQuantity] = useState(1);
   const [addToCart, setAddToCart] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const {data} = useProduct(productId);
   const {data: ratings} = useRatings({productId: productId});
   const {mutate: cartFunc} = useAddCartItem({
     onSuccess: (item) => {
+      setAddToCart(true);
       cartCtx.addItem(item);
+    },
+    onError: (error) => {
+      setErrorMessage(error?.response?.data);
+      setIsError(true);
     }
   });
 
@@ -45,12 +52,11 @@ export const ProductInfoPage = () => {
         quantity
       });
     }
-    setAddToCart(true);
   };
 
   return (
     <Card sx={{padding: 2, width: '100%'}}>
-      <Stack direction={"row"}>
+      <Stack direction={"row"} sx={{alignItems: 'center'}}>
         <InventoryIcon sx={{fontSize: 200, marginBottom: 2}}/>
         {/*<CardMedia*/}
         {/*  component="img"*/}
@@ -86,29 +92,18 @@ export const ProductInfoPage = () => {
                 </Typography>
                 <QuantityCounter quantity={quantity} setQuantity={setQuantity} width="8rem"/>
               </Stack>
-              <Stack direction="row" spacing={4} sx={{justifyContent: 'flex-start'}}>
-                <Button
-                  variant="contained"
-                  sx={{
-                    backgroundColor: "#ffc107",
-                    color: 'black',
-                    width: '10rem',
-                    '&:hover': {backgroundColor: '#ffb300'}
-                  }}>
-                  Buy Now
-                </Button>
-                <Button
-                  onClick={onAddToCart}
-                  variant="contained"
-                  sx={{
-                    backgroundColor: "#ff8f00",
-                    color: 'black',
-                    width: '10rem',
-                    '&:hover': {backgroundColor: '#ff6f00'}
-                  }}>
-                  Add to Cart
-                </Button>
-              </Stack>
+              <Button
+                onClick={onAddToCart}
+                variant="contained"
+                size="small"
+                sx={{
+                  backgroundColor: "#ffc107",
+                  color: 'black',
+                  width: '10rem',
+                  '&:hover': {backgroundColor: '#ffb300'}
+                }}>
+                Add to Cart
+              </Button>
             </Stack>
           </CardContent>
           {addToCart && (
@@ -121,6 +116,12 @@ export const ProductInfoPage = () => {
       </Stack>
       <Divider/>
       <RatingCard ratings={ratings?.items} averageRating={averageRating}/>
+      <Snackbar open={isError} autoHideDuration={6000} onClose={() => setIsError(false)}
+                anchorOrigin={{vertical: 'bottom', horizontal: 'right'}}>
+        <Alert onClose={() => setIsError(false)} severity="error" sx={{width: '100%'}}>
+          {errorMessage}
+        </Alert>
+      </Snackbar>
     </Card>
   );
 };
