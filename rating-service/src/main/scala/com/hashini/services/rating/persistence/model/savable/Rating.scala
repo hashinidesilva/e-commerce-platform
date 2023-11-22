@@ -7,9 +7,10 @@ import java.sql.Timestamp
 case class Rating(productId: Int,
                   userId: Int,
                   rating: Int,
+                  review: String,
                   createdTime: Timestamp = new Timestamp(System.currentTimeMillis()),
                   id: Int = 0) {
   def getRatingResponseDTO: RatingResponseDTO = {
-    RatingResponseDTO(productId, userId, rating, id)
+    RatingResponseDTO(productId, userId, rating, review, id)
   }
 }

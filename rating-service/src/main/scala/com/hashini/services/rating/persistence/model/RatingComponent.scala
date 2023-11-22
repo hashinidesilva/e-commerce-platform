@@ -21,11 +21,14 @@ trait RatingComponent {
 
     def rating: Rep[Int] = column[Int]("rating")
 
+    def review: Rep[String] = column[String]("review")
+
     def createdTime: Rep[Timestamp] = column[Timestamp]("created_time")
 
     override def * : ProvenShape[Rating] = (productId,
       userId,
       rating,
+      review,
       createdTime,
       id
     ) <> (Rating.tupled, Rating.unapply)
