@@ -3,7 +3,7 @@ import RemoveIcon from "@mui/icons-material/Remove";
 import AddIcon from "@mui/icons-material/Add";
 import PropTypes from "prop-types";
 
-export const QuantityCounter = ({quantity, setQuantity, width = '20%'}) => {
+export const QuantityCounter = ({quantity, setQuantity}) => {
   const handleChange = (event) => {
     const regex = /^[0-9\b]+$/;
     if (event.target.value === "" || regex.test(event.target.value)) {
@@ -17,7 +17,6 @@ export const QuantityCounter = ({quantity, setQuantity, width = '20%'}) => {
       size="small"
       value={quantity}
       onChange={handleChange}
-      sx={{width: width}}
       inputProps={{style: {textAlign: 'center'}}}
       InputProps={{
         startAdornment: (
@@ -52,6 +51,5 @@ export const QuantityCounter = ({quantity, setQuantity, width = '20%'}) => {
 
 QuantityCounter.propTypes = {
   quantity: PropTypes.number,
-  setQuantity: PropTypes.func,
-  width: PropTypes.string
+  setQuantity: PropTypes.func
 };

@@ -83,14 +83,13 @@ export const ProductInfoPage = () => {
               </Stack>
               <Divider/>
               <Typography variant="h6" component="div">
-                {/*Rs. 88*/}
                 Rs. {unitPrice}
               </Typography>
-              <Stack direction="row" spacing={4} sx={{alignItems: 'center'}}>
+              <Stack direction="row" spacing={4} sx={{alignItems: 'center', maxWidth: '30%'}}>
                 <Typography variant="subtitle1" component="div">
                   Quantity
                 </Typography>
-                <QuantityCounter quantity={quantity} setQuantity={setQuantity} width="8rem"/>
+                <QuantityCounter quantity={quantity} setQuantity={setQuantity}/>
               </Stack>
               <Button
                 onClick={onAddToCart}
@@ -99,7 +98,7 @@ export const ProductInfoPage = () => {
                 sx={{
                   backgroundColor: "#ffc107",
                   color: 'black',
-                  width: '10rem',
+                  width: '30%',
                   '&:hover': {backgroundColor: '#ffb300'}
                 }}>
                 Add to Cart

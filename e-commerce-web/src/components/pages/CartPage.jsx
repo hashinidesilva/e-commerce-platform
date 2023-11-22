@@ -69,25 +69,38 @@ const CartItem = ({item}) => {
   };
 
   return (
-    <Stack direction={"row"} spacing={4} sx={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-      <Checkbox checked={item.selected} onChange={(event) => onUpdateSelected(event.target.checked)}/>
-      <InventoryIcon sx={{fontSize: 80}}/>
-      <Typography component="div" variant="subtitle1" sx={{flex: 2}}>
-        {item.product?.name}
-      </Typography>
-      <QuantityCounter quantity={item.quantity} setQuantity={onUpdateQuantity} width="15%"/>
-      <Typography variant="h6" component="div">
-        Rs. {item.product?.unitPrice}
-      </Typography>
-      <IconButton
-        size="small"
-        color="inherit"
-        onClick={() => onItemRemove(item.id)}
-        sx={{backgroundColor: "white", '&:hover': {backgroundColor: 'white'}}}
-      >
-        <DeleteIcon/>
-      </IconButton>
-    </Stack>
+    <Grid container spacing={1.5}
+          sx={{display: 'flex', justifyContent: "space-between", alignItems: 'center'}}>
+      <Grid item xs={0.5}>
+        <Checkbox checked={item.selected} onChange={(event) => onUpdateSelected(event.target.checked)}/>
+      </Grid>
+      <Grid item xs={1.5}>
+        <InventoryIcon sx={{fontSize: 80}}/>
+      </Grid>
+      <Grid item xs={5}>
+        <Typography component="div" variant="subtitle1" sx={{flex: 2}}>
+          {item.product?.name}
+        </Typography>
+      </Grid>
+      <Grid item xs={2}>
+        <QuantityCounter quantity={item.quantity} setQuantity={onUpdateQuantity}/>
+      </Grid>
+      <Grid item xs={1.5}>
+        <Typography variant="h6" component="div">
+          Rs. {item.product?.unitPrice}
+        </Typography>
+      </Grid>
+      <Grid item xs={0.7}>
+        <IconButton
+          size="small"
+          color="inherit"
+          onClick={() => onItemRemove(item.id)}
+          sx={{backgroundColor: "white", '&:hover': {backgroundColor: 'white'}}}
+        >
+          <DeleteIcon/>
+        </IconButton>
+      </Grid>
+    </Grid>
   );
 };
 
