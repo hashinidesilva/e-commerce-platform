@@ -8,4 +8,6 @@ trait OrderItemDAO {
 
   def insertOrderItems(orderItems: Seq[OrderItem]): Future[Seq[OrderItem]]
 
+  def getItems(orderId: Int): Future[Seq[OrderItem]]
+
 }

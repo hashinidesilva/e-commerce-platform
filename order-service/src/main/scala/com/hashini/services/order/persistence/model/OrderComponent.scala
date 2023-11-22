@@ -20,10 +20,14 @@ trait OrderComponent {
 
     def status: Rep[String] = column[String]("status")
 
+    def address: Rep[String] = column[String]("address")
+
     def totalAmount: Rep[Double] = column[Double]("total_amount")
 
-    override def * : ProvenShape[Order] = (userId,
-      totalAmount, status, orderDate, id) <> (Order.tupled, Order.unapply)
+    def shippingAmount: Rep[Double] = column[Double]("shipping_amount")
+
+    override def * : ProvenShape[Order] = (userId, totalAmount, address, shippingAmount,
+      status, orderDate, id) <> (Order.tupled, Order.unapply)
   }
 
   lazy val orderQuery = TableQuery[OrderTable]

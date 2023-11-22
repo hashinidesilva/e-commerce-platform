@@ -14,4 +14,8 @@ class DefaultOrderItemDAO extends OrderItemDAO {
   override def insertOrderItems(orderItems: Seq[OrderItem]): Future[Seq[OrderItem]] = {
     db.run((orderItemQuery returning orderItemQuery) ++= orderItems)
   }
+
+  override def getItems(orderId: Int): Future[Seq[OrderItem]] = {
+    db.run(orderItemQuery.filter(_.orderId === orderId).result)
+  }
 }

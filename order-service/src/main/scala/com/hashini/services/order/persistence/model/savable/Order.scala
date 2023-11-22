@@ -7,6 +7,8 @@ import java.sql.Timestamp
 
 case class Order(userId: Int,
                  totalAmount: Double,
+                 address: String,
+                 shippingAmount: Double,
                  status: String = "Order Confirmed",
                  orderDate: Timestamp = new Timestamp(System.currentTimeMillis()),
                  id: Int = 0) {
@@ -15,8 +17,10 @@ case class Order(userId: Int,
     OrderResponseDTO(id,
       userId,
       totalAmount,
+      shippingAmount,
       status,
       TimestampConverter.convertToString(orderDate),
+      address,
       items.map(_.getOrderItemResponseDTO))
   }
 
