@@ -37,7 +37,7 @@ export const AddressCard = () => {
 
   return (
     <Card sx={{p: 3}}>
-      <Typography variant="h5" gutterBottom fontWeight={600}>Shipping Address</Typography>
+      <Typography sx={{fontSize: 20}} gutterBottom fontWeight={600}>Shipping Address</Typography>
       {addresses?.length === 0 ? (
         <Typography sx={{color: "#00838f", '&:hover': {cursor: 'grab'}}}>
           Add a new address

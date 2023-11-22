@@ -40,7 +40,7 @@ export const RatingCard = ({ratings = [], averageRating}) => {
       </Typography>
       <Stack direction="row" spacing={1} sx={{alignItems: "center"}}>
         <Rating name="read-only" value={averageRating ?? 0} readOnly size="medium" precision={0.5}/>
-        <Typography component="div" variant="h6">
+        <Typography sx={{fontSize: 17}}>
           {averageRating} out of 5
         </Typography>
       </Stack>

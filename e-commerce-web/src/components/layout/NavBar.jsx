@@ -1,9 +1,21 @@
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { Badge, ClickAwayListener, IconButton, Menu, MenuItem, Stack, Toolbar, Typography } from "@mui/material";
+import {
+  Badge,
+  ClickAwayListener,
+  IconButton,
+  ListItemIcon,
+  ListItemText,
+  Menu,
+  MenuItem,
+  Stack,
+  Toolbar,
+  Typography
+} from "@mui/material";
 import PersonIcon from '@mui/icons-material/Person';
-// import LanguageIcon from '@mui/icons-material/Language';
+import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
+import ShoppingBagIcon from '@mui/icons-material/ShoppingBag';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { SearchProducts } from "../product/SearchProducts.jsx";
 import { CartContext } from "../../store/cart-context.jsx";
@@ -58,7 +70,8 @@ export const NavBar = () => {
         E-Commerce
       </Typography>
       <SearchProducts/>
-      <Stack direction="row" spacing={4} sx={{marginLeft: 4, justifyContent: 'flex-end', alignItems: 'center'}}>
+      <Stack direction="row" spacing={4}
+             sx={{marginLeft: 4, marginRight: '3rem', justifyContent: 'flex-end', alignItems: 'center'}}>
         <IconButton
           size="small"
           color="inherit"
@@ -75,8 +88,14 @@ export const NavBar = () => {
             onClose={handleClose}
             MenuListProps={{onMouseLeave: handleClose}}
           >
-            <MenuItem onClick={handleMyAccount}>My Account</MenuItem>
-            <MenuItem onClick={handleOrders}>My Orders</MenuItem>
+            <MenuItem onClick={handleMyAccount}>
+              <ListItemIcon><SentimentSatisfiedAltIcon/></ListItemIcon>
+              <ListItemText>My Account</ListItemText>
+            </MenuItem>
+            <MenuItem onClick={handleOrders}>
+              <ListItemIcon> <ShoppingBagIcon/></ListItemIcon>
+              <ListItemText>My Orders</ListItemText>
+            </MenuItem>
           </Menu>
         </ClickAwayListener>
         {/*<LanguageIcon/>*/}

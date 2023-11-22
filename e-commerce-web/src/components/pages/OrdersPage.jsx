@@ -13,7 +13,7 @@ export const OrdersPage = () => {
         My Orders
       </Typography>
       {isLoading && <Loading/>}
-      {!isLoading && data?.length > 0 && <OrdersTable data={data}/>}
+      {!isLoading && data?.length > 0 && <OrdersTable data={data.sort((a, b) => b.id - a.id)}/>}
       {!isLoading && data?.length === 0 && <NoOrders/>}
     </Box>
   );

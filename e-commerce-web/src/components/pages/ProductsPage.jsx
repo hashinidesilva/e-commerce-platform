@@ -12,7 +12,7 @@ export const ProductsPage = () => {
     name: searchParams.get("name"),
     category: category
   });
-  const products = data?.items ?? [];
+  const products = (data?.items ?? []).sort((a,b) => b.id - a.id);
 
   return (
     <>

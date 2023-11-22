@@ -1,5 +1,6 @@
 import {
   Box,
+  Link,
   Paper,
   Table,
   TableBody,
@@ -30,7 +31,8 @@ export const OrdersTable = ({data = []}) => {
               <TableCell align="center"><Typography variant="subtitle1" fontWeight="500">Date</Typography></TableCell>
               <TableCell align="center">
                 <Typography variant="subtitle1" fontWeight="500">Order Status</Typography></TableCell>
-              <TableCell align="right"><Typography variant="subtitle1" fontWeight="500">Total</Typography></TableCell>
+              <TableCell align="right"><Typography variant="subtitle1" fontWeight="500">Total
+                (Rs)</Typography></TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -40,16 +42,15 @@ export const OrdersTable = ({data = []}) => {
                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
               >
                 <TableCell component="th" scope="row">
-                  {/*<Link href={`orders/${order.id}`}*/}
-                  {/*      underline="none"*/}
-                  {/*      sx={{color: '#26a69a', '&:hover': {color: '#ffab40'}}}>*/}
-                  {/*  {order.id}*/}
-                  {/*</Link>*/}
-                  {order.id}
+                  <Link href={`orders/${order.id}`}
+                        underline="none"
+                        sx={{color: '#26a69a', '&:hover': {color: '#ffab40'}}}>
+                    {order.id}
+                  </Link>
                 </TableCell>
                 <TableCell align="center">{formatDate(order.orderDate)}</TableCell>
                 <TableCell align="center">{order.status}</TableCell>
-                <TableCell align="right">{order.totalAmount}</TableCell>
+                <TableCell align="right">{order.totalAmount.toFixed(2)}</TableCell>
               </TableRow>
             ))}
           </TableBody>

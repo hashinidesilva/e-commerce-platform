@@ -10,6 +10,7 @@ import { UserForm } from "../user/UserForm.jsx";
 import { UserContext } from "../../store/user-context.jsx";
 import { AddressContext } from "../../store/address-context.jsx";
 import { AddressItem } from "../user/AddressItem.jsx";
+import { Loading } from "../common/Loading.jsx";
 
 const UserInfo = ({user}) => {
   const [editUserInfo, setEditUserInfo] = useState(false);
@@ -44,7 +45,6 @@ const UserInfo = ({user}) => {
 const AddressBook = () => {
   const navigate = useNavigate();
   const addressCtx = useContext(AddressContext);
-  // const [editAddress, setEditAddress] = useState(false);
 
   useEffect(() => {
     axios.get("http://localhost:9004/users/1/addresses").then((response) => {
@@ -88,7 +88,7 @@ const RecentOrders = ({orders = []}) => {
 };
 export const MyAccountPage = () => {
   const userCtx = useContext(UserContext);
-  const {data: orders} = useOrders();
+  const {data: orders, isLoading} = useOrders();
 
   useEffect(() => {
     axios.get("http://localhost:9004/users/1").then((response) => {
@@ -101,21 +101,26 @@ export const MyAccountPage = () => {
   const recentOrders = orders?.sort((a, b) => b.id - a.id).slice(0, 3);
 
   return (
-    <Box width={'100%'}>
-      <Typography
-        sx={{marginBottom: 3, fontWeight: 700, fontSize: 20}}>
-        Manage My Account
-      </Typography>
-      <Grid container spacing={2} sx={{justifyContent: 'space-between', display: 'flex', marginBottom: '2rem'}}>
-        <Grid item xs={4}>
-          <UserInfo user={user}/>
-        </Grid>
-        <Grid item xs={7}>
-          <AddressBook/>
-        </Grid>
-      </Grid>
-      <RecentOrders orders={recentOrders}/>
-    </Box>
+    <>
+      {isLoading && <Loading/>}
+      {!isLoading && (
+        <Box width={'100%'}>
+          <Typography
+            sx={{marginBottom: 3, fontWeight: 700, fontSize: 20}}>
+            Manage My Account
+          </Typography>
+          <Grid container spacing={2} sx={{justifyContent: 'space-between', display: 'flex', marginBottom: '2rem'}}>
+            <Grid item xs={4}>
+              <UserInfo user={user}/>
+            </Grid>
+            <Grid item xs={7}>
+              <AddressBook/>
+            </Grid>
+          </Grid>
+          <RecentOrders orders={recentOrders}/>
+        </Box>
+      )}
+    </>
   );
 };
 

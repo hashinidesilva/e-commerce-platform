@@ -1,8 +1,8 @@
 import { useContext } from "react";
-import { Card, CardContent, Checkbox, Divider, Grid, IconButton, Stack, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { Button, Card, CardContent, Checkbox, Divider, Grid, IconButton, Typography } from "@mui/material";
 import PropTypes from "prop-types";
 import DeleteIcon from '@mui/icons-material/Delete';
-import InventoryIcon from "@mui/icons-material/Inventory";
 import { QuantityCounter } from "../common/QuantityCounter.jsx";
 import { OrderSummary } from "../order/OrderSummary.jsx";
 import { useCart } from "../../hooks/useCart.jsx";
@@ -12,6 +12,7 @@ import { EmptyCart } from "../order/EmptyCart.jsx";
 import { useUpdateCart } from "../../hooks/useUpdateCart.jsx";
 import { CartContext } from "../../store/cart-context.jsx";
 import { Loading } from "../common/Loading.jsx";
+import { getProductImagePath } from "../../util/CommonUtil.jsx";
 
 const CartHeader = ({itemsSize = 0, selectedItemsSize = 0, cartId}) => {
   const {mutate: updateFunc} = useUpdateCart();
@@ -25,13 +26,13 @@ const CartHeader = ({itemsSize = 0, selectedItemsSize = 0, cartId}) => {
 
   return (
     <>
-      <Typography component="div" variant="h5" fontWeight="bold" paddingLeft={'0.5rem'}>
+      <Typography sx={{fontSize: 20}} fontWeight="bold" paddingLeft={'0.5rem'}>
         Shopping Cart
       </Typography>
       <Typography component="div" variant="body2" gutterBottom>
         <Checkbox checked={itemsSize === selectedItemsSize}
                   onChange={(event) => onSelectedChange(event.target.checked)}/>
-        {`Select all ${itemsSize} item(s)`}
+        Select all items
       </Typography>
     </>
   );
@@ -70,12 +71,18 @@ const CartItem = ({item}) => {
 
   return (
     <Grid container spacing={1.5}
-          sx={{display: 'flex', justifyContent: "space-between", alignItems: 'center'}}>
+          sx={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: "space-between",
+            alignItems: 'center',
+            marginY: '0.5rem'
+          }}>
       <Grid item xs={0.5}>
         <Checkbox checked={item.selected} onChange={(event) => onUpdateSelected(event.target.checked)}/>
       </Grid>
       <Grid item xs={1.5}>
-        <InventoryIcon sx={{fontSize: 80}}/>
+        <img src={getProductImagePath(item.product.categoryId)} height={80} width={80} alt={"product"}/>
       </Grid>
       <Grid item xs={5}>
         <Typography component="div" variant="subtitle1" sx={{flex: 2}}>
@@ -105,6 +112,7 @@ const CartItem = ({item}) => {
 };
 
 export const CartPage = () => {
+  const navigate = useNavigate();
   const {data, isLoading} = useCart();
   const items = data?.items ?? [];
   const selectedItems = items.filter(item => item.selected);
@@ -123,14 +131,12 @@ export const CartPage = () => {
             <Card sx={{padding: 2, alignItems: 'center'}}>
               <CartHeader itemsSize={items.length} selectedItemsSize={selectedItemsSize} cartId={data.id}/>
               <Divider/>
-              <Stack sx={{mt: 3}}>
-                {items.sort((a, b) => a.id - b.id).map((item) => (
-                  <div key={item.id}>
-                    <CartItem item={item}/>
-                    <Divider/>
-                  </div>
-                ))}
-              </Stack>
+              {items.sort((a, b) => a.id - b.id).map((item) => (
+                <div key={item.id}>
+                  <CartItem item={item}/>
+                  <Divider light/>
+                </div>
+              ))}
               <CardContent style={{textAlign: 'right'}}>
                 <Typography component="div" variant="body1" fontWeight="bold">
                   {`Subtotal (${itemsCount} ${itemsCount > 1 ? "items" : "item"}): Rs.${subTotal}`}
@@ -139,7 +145,15 @@ export const CartPage = () => {
             </Card>
           </Grid>
           <Grid item xs={3}>
-            <OrderSummary selectedItems={selectedItems}/>
+            <Card sx={{padding: 3}}>
+              <OrderSummary subTotal={subTotal}/>
+              <Button fullWidth variant="contained" sx={{backgroundColor: "#ffb300", color: "black"}}
+                      disabled={subTotal <= 0}
+                      size={"small"}
+                      onClick={() => navigate("/checkout")}>
+                Proceed to checkout
+              </Button>
+            </Card>
           </Grid>
         </Grid>
       }

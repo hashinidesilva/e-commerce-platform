@@ -54,7 +54,8 @@ export const AddressesPage = () => {
           sx={{marginBottom: 3, fontWeight: 700, fontSize: 20}}>
           Address Book
         </Typography>
-        <Button sx={{backgroundColor: "#ffb300", color: "black"}} onClick={() => setAddNewAddress(true)}>
+        <Button sx={{backgroundColor: "#ffb300", color: "black"}} size="small"
+                onClick={() => setAddNewAddress(true)}>
           Add new address
         </Button>
       </Stack>

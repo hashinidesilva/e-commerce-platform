@@ -6,7 +6,7 @@ export const AddressItem = ({address}) => {
     <div>
       <Stack spacing={1}>
         <Stack direction={"row"} spacing={2} sx={{alignItems: 'center'}}>
-          <Typography variant="body1" fontWeight={600}>{address?.name}</Typography>
+          <Typography sx={{fontSize: 15}} fontWeight={600}>{address?.name}</Typography>
           <Typography variant="subtitle2" fontWeight={400}>{address?.phoneNumber}</Typography>
         </Stack>
         <Typography variant="body2">{address?.address}</Typography>

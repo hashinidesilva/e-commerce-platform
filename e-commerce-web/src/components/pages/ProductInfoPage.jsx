@@ -1,7 +1,19 @@
 import { useContext, useState } from "react";
 import { useParams } from "react-router-dom";
-import { Alert, Box, Button, Card, CardContent, Divider, Rating, Snackbar, Stack, Typography } from "@mui/material";
-import InventoryIcon from '@mui/icons-material/Inventory';
+import {
+  Alert,
+  Box,
+  Button,
+  Card,
+  CardContent,
+  CardMedia,
+  Divider,
+  Rating,
+  Skeleton,
+  Snackbar,
+  Stack,
+  Typography
+} from "@mui/material";
 import { CartNavigation } from "../order/CartNavigation.jsx";
 import { QuantityCounter } from "../common/QuantityCounter.jsx";
 import { useProduct } from "../../hooks/useProduct.jsx";
@@ -9,6 +21,7 @@ import { useAddCartItem } from "../../hooks/useAddCartItem.jsx";
 import { CartContext } from "../../store/cart-context.jsx";
 import { useRatings } from "../../hooks/useRatings.jsx";
 import { RatingCard } from "../product/RatingCard.jsx";
+import { getProductImagePath } from "../../util/CommonUtil.jsx";
 
 export const ProductInfoPage = () => {
   const {productId} = useParams();
@@ -30,8 +43,9 @@ export const ProductInfoPage = () => {
     }
   });
 
-  const {id, name, unitPrice, averageRating} = data ?? {};
+  const {id, name, unitPrice, averageRating, categoryId} = data ?? {};
   const cartItems = cartCtx.cart?.items ?? [];
+  const ratingSize = ratings?.items?.length;
 
   const onAddToCart = () => {
     const cart = cartCtx.cart;
@@ -56,21 +70,21 @@ export const ProductInfoPage = () => {
 
   return (
     <Card sx={{padding: 2, width: '100%'}}>
-      <Stack direction={"row"} sx={{alignItems: 'center'}}>
-        <InventoryIcon sx={{fontSize: 200, marginBottom: 2}}/>
-        {/*<CardMedia*/}
-        {/*  component="img"*/}
-        {/*  sx={{width: '40%'}}*/}
-        {/*  image={"src/assets/electronics.jpg"}*/}
-        {/*  alt="product"*/}
-        {/*/>*/}
+      <Stack direction={"row"} sx={{alignItems: 'center'}} spacing={3}>
+        {categoryId ? (
+          <CardMedia
+            component="img"
+            height="200px"
+            sx={{width: '20%'}}
+            image={getProductImagePath(categoryId)}
+            alt="product"
+          />
+        ) : <Skeleton variant="rectangular" width={'20%'} height={'200px'}/>}
         <Box sx={{display: 'flex', flexDirection: 'column', width: '100%'}}>
           <CardContent sx={{flex: '1 0 auto'}}>
             <Stack spacing={2}>
               <Typography component="div" variant="h5" gutterBottom>
-                {name?.length > 0 ? name : "Apple AirPods Pro (2nd Generation) Wireless Earbuds," +
-                  " Up to 2X More Active Noise Cancelling, Adaptive Transparency, Personalized Spatial Audio, " +
-                  "MagSafe Charging Case, Bluetooth Headphones for iPhone"}
+                {name}
               </Typography>
               <Stack direction="row" spacing={1}>
                 <Rating name="read-only" value={averageRating ?? 0} readOnly size="small" precision={0.5}/>
@@ -78,7 +92,8 @@ export const ProductInfoPage = () => {
                   variant="body"
                   component="div"
                 >
-                  {ratings?.items?.length} ratings
+                  {ratingSize} rating{ratingSize > 1 ? "s" : ""}
+                  {/*{ratings?.items?.length} ratings*/}
                 </Typography>
               </Stack>
               <Divider/>
